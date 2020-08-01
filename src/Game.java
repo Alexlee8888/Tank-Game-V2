@@ -24,8 +24,8 @@ public class Game extends Canvas implements Runnable {
         this.addKeyListener(keyInput);
         objectHandler = new Handler(keyInput);
 
-        objectHandler.addObject(new TankObject(50, 200, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
-        objectHandler.addObject(new TankObject(450, 200, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
+        objectHandler.addObject(new TankObject(50, 400, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
+        objectHandler.addObject(new TankObject(450, 25, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
         requestFocus();
         start();
 

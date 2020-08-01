@@ -5,9 +5,9 @@ import java.awt.geom.AffineTransform;
 public class TankObject implements GameObject {
 
 
-    private static int TURRET_DEGREES_TURNED = 3;
+    private static int TURRET_DEGREES_TURNED = 1;
     private static int HULL_DEGRESS_TURNED = 2;
-    private static int HULLSPEED = 4;
+    private static int HULLSPEED = 3;
     private static int ANGLE = 0;
     private TankType tankType;
     private TankPartsObject tankHull;
@@ -101,7 +101,31 @@ public class TankObject implements GameObject {
                 updateHullAngleClockWise();
             }
             if(keyInput.isKeyUp(KeyEvent.VK_SPACE)){
-                BulletObject newBullet = new BulletObject(tankHull.getX(), tankHull.getY(), tankTurret.getAngle(), tankType);
+                BulletObject newBullet = new BulletObject(tankHull.getX(), tankHull.getY(), tankTurret.getAngle(), tankType, objectHandler);
+                objectHandler.addObject(newBullet);
+            }
+        }
+        if(tankType.getGameObjectType() == GameObjectType.PLAYER_TWO) {
+            if(keyInput.isKey(KeyEvent.VK_I)) {
+                moveForward();
+            }
+            else if(keyInput.isKey(KeyEvent.VK_K)) {
+                moveBackward();
+            }
+            if(keyInput.isKey(KeyEvent.VK_W)) {
+                updateTurretAngleCounterClockWise(0);
+            }
+            else if(keyInput.isKey(KeyEvent.VK_E)) {
+                updateTurretAngleClockWise(0);
+            }
+            if(keyInput.isKey(KeyEvent.VK_J)) {
+                updateHullAngleCounterClockWise();
+            }
+            else if(keyInput.isKey(KeyEvent.VK_O)) {
+                updateHullAngleClockWise();
+            }
+            if(keyInput.isKeyUp(KeyEvent.VK_F)){
+                BulletObject newBullet = new BulletObject(tankHull.getX(), tankHull.getY(), tankTurret.getAngle(), tankType, objectHandler);
                 objectHandler.addObject(newBullet);
             }
         }
