@@ -26,7 +26,8 @@ public class BulletObject implements GameObject {
         bulletImage = tankType.getBulletImage();
         this.x = x;
         this.y = y;
-        this.hitPointX = x + tankType.getTurretWidth() / 2;
+        //this.hitPointX = x + tankType.getTurretWidth() / 2;
+        this.hitPointX = x;
         this.hitPointY = y;
         this.angle = angle;
         this.tankType = tankType;
@@ -85,20 +86,18 @@ public class BulletObject implements GameObject {
 //            System.out.println("HIT P2 : bounds " + playerTwoGetBounds + ", hitPoint:" + bulletObject.getHitPoint());
 //        }
 
-            if(playerOneGetBounds.contains(getHitPoint())) {
-                explodeBullet();
-//                gameObjects.remove(bulletObject);
+//            if(playerOneGetBounds.contains(getHitPoint())) {
+//                explodeBullet();
 //                System.out.println("HIT P1 : bounds " + playerOneGetBounds + ", hitPoint:" + getHitPoint());
 //                System.out.println("----- x = " + playerOneGetBounds.getX() + " < " + getHitPoint().x + " < " + (playerOneGetBounds.getX() + playerOneGetBounds.getWidth()));
 //                System.out.println("----- y = " + playerOneGetBounds.getY() + " < " + getHitPoint().y + " < " + (playerOneGetBounds.getY() + playerOneGetBounds.getHeight()));
-
-            }
-            else if(playerTwoGetBounds.contains(getHitPoint())) {
+//
+//            }
+            if(!isExploding && playerTwoGetBounds.contains(getHitPoint())) {
                 explodeBullet();
-//                gameObjects.remove(bulletObject);
-//                System.out.println("HIT P2 : bounds " + playerTwoGetBounds + ", hitPoint:" + getHitPoint());
-//                System.out.println("----- x = " + playerTwoGetBounds.getX() + " < " + getHitPoint().x + " < " + (playerTwoGetBounds.getX() + playerTwoGetBounds.getWidth()));
-//                System.out.println("----- y = " + playerTwoGetBounds.getY() + " < " + getHitPoint().y + " < " + (playerTwoGetBounds.getY() + playerTwoGetBounds.getHeight()));
+                System.out.println("HIT P2 : bounds " + playerTwoGetBounds + ", hitPoint:" + getHitPoint());
+                System.out.println("----- x = " + playerTwoGetBounds.getX() + " < " + getHitPoint().x + " < " + (playerTwoGetBounds.getX() + playerTwoGetBounds.getWidth()));
+                System.out.println("----- y = " + playerTwoGetBounds.getY() + " < " + getHitPoint().y + " < " + (playerTwoGetBounds.getY() + playerTwoGetBounds.getHeight()));
 
 
             }
