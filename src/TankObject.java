@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
 
 public class TankObject implements GameObject {
 
@@ -13,13 +12,16 @@ public class TankObject implements GameObject {
     private TankPartsObject tankHull;
     private TankPartsObject tankTurret;
     private Handler objectHandler;
+    private long lastShootP1;
+    private long lastShootP2;
+    private static final long threshold = 750;
 
 
     public TankObject(int x, int y, TankType tankType, Handler objectHandler) {
         this.tankType = tankType;
         this.objectHandler = objectHandler;
-        tankHull = new TankPartsObject(x, y, tankType.getHeight(), tankType.getWidth(), tankType.getHullImage(), tankType.getGameObjectType());
-        tankTurret = new TankPartsObject(x, y, tankType.getHeight(), tankType.getWidth(), tankType.getTurretImage(), tankType.getGameObjectType());
+        tankHull = new TankPartsObject(x, y, tankType.getHullHeight(), tankType.getHullWidth(), tankType.getHullImage(), tankType.getGameObjectType());
+        tankTurret = new TankPartsObject(x, y, tankType.getTurretHeight(), tankType.getTurretWidth(), tankType.getTurretImage(), tankType.getGameObjectType());
     }
 
     public void updateHullAngleClockWise () {
@@ -100,9 +102,13 @@ public class TankObject implements GameObject {
             else if(keyInput.isKey(KeyEvent.VK_RIGHT)) {
                 updateHullAngleClockWise();
             }
-            if(keyInput.isKeyUp(KeyEvent.VK_SPACE)){
-                BulletObject newBullet = new BulletObject(tankHull.getX(), tankHull.getY(), tankTurret.getAngle(), tankType, objectHandler);
-                objectHandler.addObject(newBullet);
+            long nowP1 = System.currentTimeMillis();
+            if(keyInput.isKeyUp(KeyEvent.VK_SPACE)) {
+                if(nowP1 - lastShootP1 > threshold) {
+                    BulletObject newBullet = new BulletObject(tankTurret.getX(), tankTurret.getY(), tankTurret.getAngle(), tankType, objectHandler);
+                    objectHandler.addObject(newBullet);
+                    lastShootP1 = nowP1;
+                }
             }
         }
         if(tankType.getGameObjectType() == GameObjectType.PLAYER_TWO) {
@@ -124,9 +130,15 @@ public class TankObject implements GameObject {
             else if(keyInput.isKey(KeyEvent.VK_O)) {
                 updateHullAngleClockWise();
             }
-            if(keyInput.isKeyUp(KeyEvent.VK_F)){
-                BulletObject newBullet = new BulletObject(tankHull.getX(), tankHull.getY(), tankTurret.getAngle(), tankType, objectHandler);
-                objectHandler.addObject(newBullet);
+
+
+            long nowP2 = System.currentTimeMillis();
+            if(keyInput.isKeyUp(KeyEvent.VK_F)) {
+                if(nowP2 - lastShootP2 > threshold) {
+                    BulletObject newBullet = new BulletObject(tankTurret.getX(), tankTurret.getY(), tankTurret.getAngle(), tankType, objectHandler);
+                    objectHandler.addObject(newBullet);
+                    lastShootP2 = nowP2;
+                }
             }
         }
     }
@@ -135,11 +147,13 @@ public class TankObject implements GameObject {
     public void render(Graphics g) {
         tankHull.render(g);
         tankTurret.render(g);
+
+
     }
 
     @Override
     public Rectangle getBounds() {
-        return null;
+        return tankHull.getBounds();
     }
 
 }

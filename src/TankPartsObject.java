@@ -25,18 +25,23 @@ public class TankPartsObject extends AbstractGameObject {
         Graphics2D g2d = (Graphics2D) g;
         // draw rect
         AffineTransform identity = new AffineTransform();
+
         g2d.setTransform(identity);
         // translate tank
         g2d.translate(getX(), getY());
         // rotate tank
         g2d.rotate(Math.toRadians(getAngle()), getX(), getY());
         // draw tank
+
         g.drawImage(getObjectImage(), (int) getTopLeftX(), (int) getTopLeftY(), getWidth(), getHeight(), null);
+        g.setColor(Color.RED);
+        g.drawRect((int) getTopLeftX(), (int) getTopLeftY(), getWidth(), getHeight());
+
     }
 
     @Override
     public Rectangle getBounds() {
-        return null;
+        return new Rectangle((int) getTopLeftX(), (int) getTopLeftY(), getWidth(), getHeight());
     }
 
 

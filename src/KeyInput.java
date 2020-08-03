@@ -20,6 +20,7 @@ public class KeyInput implements KeyListener {
         for(int i = 0; i < NUM_KEYS; i++) {
             keysLastPressed[i] = keysPressed[i];
         }
+
     }
 
     public boolean isKey(int keyCode) {
@@ -37,6 +38,7 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         keysPressed[e.getKeyCode()] = true;
+        System.out.print("update");
     }
 
     @Override

@@ -3,11 +3,12 @@ import java.awt.*;
 
 public class Window {
 
-    public Window(int width, int height, Game game, String title) {
+    public Window(Dimension dimension, Game game, String title) {
         JFrame frame = new JFrame(title);
-        frame.setPreferredSize(new Dimension(width, height));
-        frame.setMaximumSize(new Dimension(width, height));
-        frame.setMinimumSize(new Dimension(width, height));
+
+        frame.setPreferredSize(dimension);
+        frame.setMaximumSize(dimension);
+        frame.setMinimumSize(dimension);
 
         frame.add(game);
         frame.setResizable(false);

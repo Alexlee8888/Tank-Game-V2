@@ -4,17 +4,28 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class BulletObject implements GameObject {
-    private static final int BULLET_SPEED = 8;
+    private static final int BULLET_SPEED = 2;
+
+    private TankType tankType;
+    private Handler objectHandler;
     private double x;
     private double y;
     private int angle;
-    private TankType tankType;
     private boolean removeBullet = false;
-    private Handler objectHandler;
+    private double hitPointX;
+    private double hitPointY;
+
+    private Image bulletImage;
+    private boolean isBulletMoving = true;
+    private boolean isExploding = false;
+
 
     public BulletObject(double x, double y, int angle, TankType tankType, Handler objectHandler) {
+        bulletImage = tankType.getBulletImage();
         this.x = x;
         this.y = y;
+        this.hitPointX = x + tankType.getTurretWidth()/2;
+        this.hitPointY = y;
         this.angle = angle;
         this.tankType = tankType;
         this.objectHandler = objectHandler;
@@ -32,6 +43,8 @@ public class BulletObject implements GameObject {
     public void moveBullet() {
         double deltaX = (BULLET_SPEED*Math.cos(Math.toRadians(angle)));
         double deltaY = (BULLET_SPEED*Math.sin(Math.toRadians(angle)));
+        hitPointX += deltaX;
+        hitPointY += deltaY;
         x += deltaX;
         y += deltaY;
         if(removeBullet) {
@@ -41,7 +54,11 @@ public class BulletObject implements GameObject {
 
     @Override
     public void tick(KeyInput keyInput) {
-        moveBullet();
+        objectHandler.checkCollisions();
+        if (isBulletMoving) {
+            moveBullet();
+        }
+
     }
 
     @Override
@@ -55,11 +72,29 @@ public class BulletObject implements GameObject {
         // rotate tank
         g2d.rotate(Math.toRadians(angle), x, y);
         // draw tank
-        g.drawImage(tankType.getBulletImage(),((int) x - (tankType.getWidth()/2)), (int) (y - (tankType.getHeight()/2)), tankType.getWidth(), tankType.getHeight(), null);
+        g.fillOval((int) (hitPointX) - 8, (int) (hitPointY) - 8, 16, 16);
+        g.drawImage(bulletImage,((int) x - (tankType.getTurretWidth())/2), (int) (y - (tankType.getTurretHeight())/2), tankType.getTurretWidth(), tankType.getTurretHeight(), null);
     }
 
     @Override
     public Rectangle getBounds() {
         return null;
     }
+
+    public Point getHitPoint() {
+        return new Point((int) (hitPointX), (int) (hitPointY));
+    }
+
+    public void explodeBullet() {
+        isExploding = true;
+        isBulletMoving = false;
+        Image bullet_explosion_1 = Toolkit.getDefaultToolkit().getImage("bullet_explosion_1.png");
+        setBulletImage(bullet_explosion_1);
+    }
+
+    public void setBulletImage(Image image) {
+        bulletImage = image;
+    }
+
+
 }

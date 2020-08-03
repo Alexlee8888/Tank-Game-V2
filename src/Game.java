@@ -5,8 +5,8 @@ import java.awt.image.BufferStrategy;
 public class Game extends Canvas implements Runnable {
 
     private static final long serialVersionUID = 1L;
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 1000;
+
+    public static final Dimension windowDimension = Toolkit.getDefaultToolkit().getScreenSize();
 
 
 
@@ -17,18 +17,19 @@ public class Game extends Canvas implements Runnable {
     private Thread thread;
 
 
+
     public Game() {
-        new Window(WIDTH, HEIGHT, this, "Tank Game");
+
+        new Window(windowDimension, this, "Tank Game");
 
         keyInput = new KeyInput();
         this.addKeyListener(keyInput);
         objectHandler = new Handler(keyInput);
 
-        objectHandler.addObject(new TankObject(50, 400, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
-        objectHandler.addObject(new TankObject(450, 25, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
+        objectHandler.addObject(new TankObject(50, 350, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
+        objectHandler.addObject(new TankObject(650, 75, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
         requestFocus();
         start();
-
     }
 
 //    public void start() {
@@ -86,6 +87,7 @@ public class Game extends Canvas implements Runnable {
                     frames = 0;
                     System.out.println("FPS: " + fps);
                 }
+
 
             }
             if(render) {
@@ -154,9 +156,10 @@ public class Game extends Canvas implements Runnable {
         }
         Graphics g = bs.getDrawGraphics();
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+        g.fillRect(0, 0, (int) windowDimension.getWidth(), (int) windowDimension.getHeight());
         // custom logic code
         renderGame(g);
+
 
         g.dispose();
         bs.show();
