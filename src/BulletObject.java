@@ -4,9 +4,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class BulletObject implements GameObject {
+    private static Image bullet_explosion_0 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion1.png");
+    private static Image bullet_explosion_1 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion2.png");
+    private static Image bullet_explosion_2 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion3.png");
+    private static Image bullet_explosion_3 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion4.png");
+    private static Image bullet_explosion_4 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion5.png");
+    private static Image bullet_explosion_5 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion6.png");
+
     private static final int BULLET_SPEED = 12;
-    private static int PLAYER_ONE_TANK_OBJECT_INDEX = 0;
-    private static int PLAYER_TWO_TANK_OBJECT_INDEX = 1;
+    private static final int PLAYER_ONE_TANK_OBJECT_INDEX = 0;
+    private static final int PLAYER_TWO_TANK_OBJECT_INDEX = 1;
+    private static final int BULLET_OFFSET = 35;
 
     private TankType tankType;
     private Handler objectHandler;
@@ -21,16 +29,23 @@ public class BulletObject implements GameObject {
     private boolean isBulletMoving = true;
     private boolean isExploding = false;
 
+    private int countStatusTick = 0;
+    private int statusOfExplosions = 1;
+
+
+
+
+
 
     public BulletObject(double x, double y, int angle, TankType tankType, Handler objectHandler) {
         bulletImage = tankType.getBulletImage();
+        this.tankType = tankType;
         this.x = x;
         this.y = y;
-        //this.hitPointX = x + tankType.getTurretWidth() / 2;
-        this.hitPointX = x;
-        this.hitPointY = y;
         this.angle = angle;
-        this.tankType = tankType;
+        this.hitPointX = x + Math.cos(Math.toRadians(angle)) * ((tankType.getTurretWidth() / 2.0) - BULLET_OFFSET) ;
+        this.hitPointY = y + Math.sin(Math.toRadians(angle)) * ((tankType.getTurretWidth() / 2.0) - BULLET_OFFSET);
+
         this.objectHandler = objectHandler;
         new Timer().schedule(
                 new TimerTask() {
@@ -61,39 +76,30 @@ public class BulletObject implements GameObject {
         if (isBulletMoving) {
             moveBullet();
         }
+        else if(countStatusTick % 5 == 0 && isExploding) {
+            Image bullet_explosion = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion" + statusOfExplosions + ".png");
+            setBulletImage(bullet_explosion);
+            statusOfExplosions++;
+        }
+        else if(countStatusTick > 120 && isExploding) {
+            objectHandler.removeObject(this);
+        }
+
+        countStatusTick++;
 
     }
 
     public void checkCollisions() {
-        Rectangle playerOneGetBounds = objectHandler.gameObjects.get(PLAYER_ONE_TANK_OBJECT_INDEX).getBounds();
-        Rectangle playerTwoGetBounds = objectHandler.gameObjects.get(PLAYER_TWO_TANK_OBJECT_INDEX).getBounds();
+        Rectangle playerOneGetBounds = objectHandler.getGameObjects().get(PLAYER_ONE_TANK_OBJECT_INDEX).getBounds();
+        Rectangle playerTwoGetBounds = objectHandler.getGameObjects().get(PLAYER_TWO_TANK_OBJECT_INDEX).getBounds();
+            if(playerOneGetBounds.contains(getHitPoint())) {
+                explodeBullet();
+                System.out.println("HIT P1 : bounds " + playerOneGetBounds + ", hitPoint:" + getHitPoint());
+                System.out.println("----- x = " + playerOneGetBounds.getX() + " < " + getHitPoint().x + " < " + (playerOneGetBounds.getX() + playerOneGetBounds.getWidth()));
+                System.out.println("----- y = " + playerOneGetBounds.getY() + " < " + getHitPoint().y + " < " + (playerOneGetBounds.getY() + playerOneGetBounds.getHeight()));
 
-//        if (playerOneGetBounds.getX() < getHitPoint().getX()
-//                && playerOneGetBounds.getX() + playerOneGetBounds.getWidth() > getHitPoint().getX()
-//                && playerOneGetBounds.getY() < getHitPoint().getY()
-//                && playerOneGetBounds.getY() + playerOneGetBounds.getHeight() > getHitPoint().getY()) {
-//            explodeBullet();
-////                gameObjects.remove(bulletObject);
-//            System.out.println("HIT P1 : bounds " + playerOneGetBounds + ", hitPoint:" + bulletObject.getHitPoint());
-//
-//        }
-//        if (playerTwoGetBounds.getX() < bulletObject.getHitPoint().getX()
-//                && playerTwoGetBounds.getX() + playerTwoGetBounds.getWidth() > bulletObject.getHitPoint().getX()
-//                && playerTwoGetBounds.getY() < bulletObject.getHitPoint().getY()
-//                && playerTwoGetBounds.getY() + playerTwoGetBounds.getHeight() > bulletObject.getHitPoint().getY()) {
-//            bulletObject.explodeBullet();
-////                gameObjects.remove(bulletObject);
-//            System.out.println("HIT P2 : bounds " + playerTwoGetBounds + ", hitPoint:" + bulletObject.getHitPoint());
-//        }
-
-//            if(playerOneGetBounds.contains(getHitPoint())) {
-//                explodeBullet();
-//                System.out.println("HIT P1 : bounds " + playerOneGetBounds + ", hitPoint:" + getHitPoint());
-//                System.out.println("----- x = " + playerOneGetBounds.getX() + " < " + getHitPoint().x + " < " + (playerOneGetBounds.getX() + playerOneGetBounds.getWidth()));
-//                System.out.println("----- y = " + playerOneGetBounds.getY() + " < " + getHitPoint().y + " < " + (playerOneGetBounds.getY() + playerOneGetBounds.getHeight()));
-//
-//            }
-            if(!isExploding && playerTwoGetBounds.contains(getHitPoint())) {
+            }
+            if(playerTwoGetBounds.contains(getHitPoint())) {
                 explodeBullet();
                 System.out.println("HIT P2 : bounds " + playerTwoGetBounds + ", hitPoint:" + getHitPoint());
                 System.out.println("----- x = " + playerTwoGetBounds.getX() + " < " + getHitPoint().x + " < " + (playerTwoGetBounds.getX() + playerTwoGetBounds.getWidth()));
@@ -101,23 +107,24 @@ public class BulletObject implements GameObject {
 
 
             }
-
-
     }
 
     @Override
     public void render(Graphics g) {
+
         Graphics2D g2d = (Graphics2D) g;
         // draw rect
         AffineTransform identity = new AffineTransform();
+
         g2d.setTransform(identity);
         // translate tank
 //        g2d.translate(x, y);
         // rotate tank
         g2d.rotate(Math.toRadians(angle), x, y);
+
+
         // draw tank
-        g.fillOval((int) (hitPointX) - 4, (int) (hitPointY) - 4, 8, 8);
-        g.drawRect(((int) x - (tankType.getTurretWidth()) / 2), (int) (y - (tankType.getTurretHeight()) / 2), tankType.getTurretWidth(), tankType.getTurretHeight());
+//        g.drawRect(((int) x - (tankType.getTurretWidth()) / 2), (int) (y - (tankType.getTurretHeight()) / 2), tankType.getTurretWidth(), tankType.getTurretHeight());
         g.drawImage(bulletImage, ((int) x - (tankType.getTurretWidth()) / 2), (int) (y - (tankType.getTurretHeight()) / 2), tankType.getTurretWidth(), tankType.getTurretHeight(), null);
     }
 
@@ -131,10 +138,9 @@ public class BulletObject implements GameObject {
     }
 
     public void explodeBullet() {
-        isExploding = true;
         isBulletMoving = false;
-        Image bullet_explosion_1 = Toolkit.getDefaultToolkit().getImage("bullet_explosion_1.png");
-        setBulletImage(bullet_explosion_1);
+        isExploding = true;
+
     }
 
     public void setBulletImage(Image image) {

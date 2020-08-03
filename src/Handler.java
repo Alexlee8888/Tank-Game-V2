@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Handler {
-    List<GameObject> gameObjects = new ArrayList<>();
+    private List<GameObject> gameObjects = new ArrayList<>();
     private KeyInput keyInput;
 
     private int scoreP1 = 0;
@@ -34,6 +34,10 @@ public class Handler {
 
     public void removeObject(GameObject gameObject) {
         gameObjects.remove(gameObject);
+    }
+
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
     }
 
 
