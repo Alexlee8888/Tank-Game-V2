@@ -1,13 +1,13 @@
 import com.sun.tools.classfile.Opcode;
 import javafx.scene.input.KeyCode;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 
 public class KeyInput implements KeyListener {
 
@@ -38,7 +38,7 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         keysPressed[e.getKeyCode()] = true;
-        System.out.print("update");
+        System.out.println("updated key is:" + e.getKeyCode());
     }
 
     @Override

@@ -6,7 +6,9 @@ public class Game extends Canvas implements Runnable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final Dimension windowDimension = Toolkit.getDefaultToolkit().getScreenSize();
+
+//    public static final Dimension windowDimension = Toolkit.getDefaultToolkit().getScreenSize();
+    public static final Dimension windowDimension = new Dimension(1000, 750);
 
 
 
@@ -26,8 +28,8 @@ public class Game extends Canvas implements Runnable {
         this.addKeyListener(keyInput);
         objectHandler = new Handler(keyInput);
 
-        objectHandler.addObject(new TankObject(50, 350, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
-        objectHandler.addObject(new TankObject(650, 75, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
+        objectHandler.addObject(new TankObject(100, 120, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
+        objectHandler.addObject(new TankObject(800, 75, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
         requestFocus();
         start();
     }
@@ -159,10 +161,8 @@ public class Game extends Canvas implements Runnable {
         g.fillRect(0, 0, (int) windowDimension.getWidth(), (int) windowDimension.getHeight());
         // custom logic code
         renderGame(g);
-
-
-        g.dispose();
         bs.show();
+        g.dispose();
     }
 
     // game rendering code

@@ -3,7 +3,6 @@ import java.awt.geom.AffineTransform;
 
 public class TankPartsObject extends AbstractGameObject {
 
-
     public TankPartsObject(int x, int y, int height, int width, Image image, GameObjectType gameObjectType) {
         super(x, y , height, width, image, gameObjectType);
         if(gameObjectType == GameObjectType.PLAYER_ONE) {
@@ -28,14 +27,19 @@ public class TankPartsObject extends AbstractGameObject {
 
         g2d.setTransform(identity);
         // translate tank
-        g2d.translate(getX(), getY());
+        //g2d.translate(getX(), getY());
         // rotate tank
         g2d.rotate(Math.toRadians(getAngle()), getX(), getY());
         // draw tank
 
-        g.drawImage(getObjectImage(), (int) getTopLeftX(), (int) getTopLeftY(), getWidth(), getHeight(), null);
         g.setColor(Color.RED);
         g.drawRect((int) getTopLeftX(), (int) getTopLeftY(), getWidth(), getHeight());
+        g2d.draw(getBounds());
+//        ((Graphics2D) g).scale(0.1, 0.1);
+        g.drawImage(getObjectImage(), (int) getTopLeftX(), (int) getTopLeftY(), getWidth(), getHeight(), null);
+//        g.drawImage(getObjectImage(), (int) getTopLeftX(), (int) getTopLeftY(),  null);
+
+
 
     }
 

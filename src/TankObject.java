@@ -6,7 +6,7 @@ public class TankObject implements GameObject {
 
     private static int TURRET_DEGREES_TURNED = 1;
     private static int HULL_DEGRESS_TURNED = 2;
-    private static int HULLSPEED = 3;
+    private static int HULLSPEED = 6;
     private static int ANGLE = 0;
     private TankType tankType;
     private TankPartsObject tankHull;
