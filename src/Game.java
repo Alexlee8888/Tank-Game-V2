@@ -28,8 +28,8 @@ public class Game extends Canvas implements Runnable {
         this.addKeyListener(keyInput);
         objectHandler = new Handler(keyInput);
 
-        objectHandler.addObject(new TankObject(100, 120, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
-        objectHandler.addObject(new TankObject(800, 75, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
+        objectHandler.addObject(new TankObject(100, 500, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
+        objectHandler.addObject(new TankObject(800, 500, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
         requestFocus();
         start();
     }
@@ -81,6 +81,7 @@ public class Game extends Canvas implements Runnable {
             while(unprocessedTime >= UPDATE_CAP) {
                 unprocessedTime-= UPDATE_CAP;
                 render = true;
+                requestFocus();
                 tick();
                 keyInput.update();
                 if(frameTime >= 1.0) {

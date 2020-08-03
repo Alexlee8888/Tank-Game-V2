@@ -90,10 +90,10 @@ public class TankObject implements GameObject {
             else if(keyInput.isKey(KeyEvent.VK_DOWN)) {
                 moveBackward();
             }
-            if(keyInput.isKey(KeyEvent.VK_Z)) {
+            if(keyInput.isKey(KeyEvent.VK_D)) {
                 updateTurretAngleCounterClockWise(0);
             }
-            else if(keyInput.isKey(KeyEvent.VK_X)) {
+            else if(keyInput.isKey(KeyEvent.VK_F)) {
                 updateTurretAngleClockWise(0);
             }
             if(keyInput.isKey(KeyEvent.VK_LEFT)) {
@@ -112,28 +112,28 @@ public class TankObject implements GameObject {
             }
         }
         if(tankType.getGameObjectType() == GameObjectType.PLAYER_TWO) {
-            if(keyInput.isKey(KeyEvent.VK_I)) {
+            if(keyInput.isKey(KeyEvent.VK_G)) {
                 moveForward();
             }
-            else if(keyInput.isKey(KeyEvent.VK_K)) {
+            else if(keyInput.isKey(KeyEvent.VK_B)) {
                 moveBackward();
             }
-            if(keyInput.isKey(KeyEvent.VK_W)) {
+            if(keyInput.isKey(KeyEvent.VK_1)) {
                 updateTurretAngleCounterClockWise(0);
             }
-            else if(keyInput.isKey(KeyEvent.VK_E)) {
+            else if(keyInput.isKey(KeyEvent.VK_2)) {
                 updateTurretAngleClockWise(0);
             }
-            if(keyInput.isKey(KeyEvent.VK_J)) {
+            if(keyInput.isKey(KeyEvent.VK_V)) {
                 updateHullAngleCounterClockWise();
             }
-            else if(keyInput.isKey(KeyEvent.VK_O)) {
+            else if(keyInput.isKey(KeyEvent.VK_H)) {
                 updateHullAngleClockWise();
             }
 
 
             long nowP2 = System.currentTimeMillis();
-            if(keyInput.isKeyUp(KeyEvent.VK_F)) {
+            if(keyInput.isKeyUp(KeyEvent.VK_E)) {
                 if(nowP2 - lastShootP2 > threshold) {
                     BulletObject newBullet = new BulletObject(tankTurret.getX(), tankTurret.getY(), tankTurret.getAngle(), tankType, objectHandler);
                     objectHandler.addObject(newBullet);
