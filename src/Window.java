@@ -10,13 +10,13 @@ public class Window {
 
         JFrame frame = new JFrame(title);
         frame.setPreferredSize(dimension);
-        frame.setMaximumSize(dimension);
-        frame.setMinimumSize(dimension);
+//        frame.setMaximumSize(dimension);
+//        frame.setMinimumSize(dimension);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.add(game, BorderLayout.CENTER);
         frame.pack();
-        frame.setResizable(false);
+        frame.setResizable(true);
 
         frame.setLocationRelativeTo(null);
 

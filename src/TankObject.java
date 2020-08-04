@@ -14,14 +14,37 @@ public class TankObject implements GameObject {
     private Handler objectHandler;
     private long lastShootP1;
     private long lastShootP2;
-    private static final long threshold = 750;
+    private static final long threshold = 600;
+    private int hullSpeed;
+    private boolean canMoveForward = true;
+    private boolean canMoveBackward = true;
+    private boolean canTurnLeft = true;
+    private boolean canTurnRight = true;
+    public int lastKeyPressed;
 
 
     public TankObject(int x, int y, TankType tankType, Handler objectHandler) {
         this.tankType = tankType;
         this.objectHandler = objectHandler;
+        this.hullSpeed = HULLSPEED;
         tankHull = new TankPartsObject(x, y, tankType.getHullHeight(), tankType.getHullWidth(), tankType.getHullImage(), tankType.getGameObjectType());
         tankTurret = new TankPartsObject(x, y, tankType.getTurretHeight(), tankType.getTurretWidth(), tankType.getTurretImage(), tankType.getGameObjectType());
+    }
+
+    public void setMoveForward(boolean bool) {
+        canMoveForward = bool;
+    }
+
+    public void setMoveBackward (boolean bool){
+        canMoveBackward = bool;
+    }
+
+    public void setTurnLeft(boolean bool) {
+        canTurnLeft = bool;
+    }
+
+    public void setTurnRight(boolean bool) {
+        canTurnRight = bool;
     }
 
     public void updateHullAngleClockWise () {
@@ -68,15 +91,15 @@ public class TankObject implements GameObject {
     }
 
     public void moveHull(int forwardBackward) {
-        double deltaX = forwardBackward * (HULLSPEED*Math.cos(Math.toRadians(tankHull.getAngle())));
-        double deltaY = forwardBackward * (HULLSPEED*Math.sin(Math.toRadians(tankHull.getAngle())));
+        double deltaX = forwardBackward * (hullSpeed*Math.cos(Math.toRadians(tankHull.getAngle())));
+        double deltaY = forwardBackward * (hullSpeed*Math.sin(Math.toRadians(tankHull.getAngle())));
         tankHull.setX(tankHull.getX() + deltaX);
         tankHull.setY(tankHull.getY() + deltaY);
     }
 
     public void moveTurret(int forwardBackward) {
-        double deltaX = forwardBackward * (HULLSPEED*Math.cos(Math.toRadians(tankHull.getAngle())));
-        double deltaY = forwardBackward * (HULLSPEED*Math.sin(Math.toRadians(tankHull.getAngle())));
+        double deltaX = forwardBackward * (hullSpeed*Math.cos(Math.toRadians(tankHull.getAngle())));
+        double deltaY = forwardBackward * (hullSpeed*Math.sin(Math.toRadians(tankHull.getAngle())));
         tankTurret.setX(tankTurret.getX() + deltaX);
         tankTurret.setY(tankTurret.getY() + deltaY);
     }
@@ -84,23 +107,37 @@ public class TankObject implements GameObject {
     @Override
     public void tick(KeyInput keyInput) {
         if(tankType.getGameObjectType() == GameObjectType.PLAYER_ONE) {
-            if(keyInput.isKey(KeyEvent.VK_UP)) {
+            if(keyInput.isKey(KeyEvent.VK_UP) && canMoveForward) {
                 moveForward();
+                lastKeyPressed = KeyEvent.VK_UP;
+                canMoveBackward = true;
+//                canTurnRight = true;
+//                canTurnLeft = true;
             }
-            else if(keyInput.isKey(KeyEvent.VK_DOWN)) {
+            else if(keyInput.isKey(KeyEvent.VK_DOWN) && canMoveBackward) {
                 moveBackward();
+                lastKeyPressed = KeyEvent.VK_DOWN;
+                canMoveForward = true;
+//                canTurnRight = true;
+//                canTurnLeft = true;
             }
             if(keyInput.isKey(KeyEvent.VK_Z)) {
                 updateTurretAngleCounterClockWise(0);
+                lastKeyPressed = KeyEvent.VK_Z;
             }
             else if(keyInput.isKey(KeyEvent.VK_X)) {
                 updateTurretAngleClockWise(0);
+                lastKeyPressed = KeyEvent.VK_X;
             }
-            if(keyInput.isKey(KeyEvent.VK_LEFT)) {
+            if(keyInput.isKey(KeyEvent.VK_LEFT) && canTurnLeft) {
                 updateHullAngleCounterClockWise();
+                lastKeyPressed = KeyEvent.VK_LEFT;
+                canTurnRight = true;
             }
-            else if(keyInput.isKey(KeyEvent.VK_RIGHT)) {
+            else if(keyInput.isKey(KeyEvent.VK_RIGHT) && canTurnRight) {
                 updateHullAngleClockWise();
+                lastKeyPressed = KeyEvent.VK_RIGHT;
+                canTurnLeft = true;
             }
             long nowP1 = System.currentTimeMillis();
             if(keyInput.isKeyUp(KeyEvent.VK_SPACE)) {
@@ -112,23 +149,33 @@ public class TankObject implements GameObject {
             }
         }
         if(tankType.getGameObjectType() == GameObjectType.PLAYER_TWO) {
-            if(keyInput.isKey(KeyEvent.VK_I)) {
+            if(keyInput.isKey(KeyEvent.VK_I) && canMoveForward) {
                 moveForward();
+                lastKeyPressed = KeyEvent.VK_I;
+                canMoveBackward = true;
             }
-            else if(keyInput.isKey(KeyEvent.VK_K)) {
+            else if(keyInput.isKey(KeyEvent.VK_K) && canMoveBackward) {
                 moveBackward();
+                lastKeyPressed = KeyEvent.VK_K;
+                canMoveForward = true;
             }
-            if(keyInput.isKey(KeyEvent.VK_W)) {
+            if(keyInput.isKey(KeyEvent.VK_W) ) {
                 updateTurretAngleCounterClockWise(0);
+                lastKeyPressed = KeyEvent.VK_W;
             }
-            else if(keyInput.isKey(KeyEvent.VK_E)) {
+            else if(keyInput.isKey(KeyEvent.VK_E) ) {
                 updateTurretAngleClockWise(0);
+                lastKeyPressed = KeyEvent.VK_E;
             }
-            if(keyInput.isKey(KeyEvent.VK_J)) {
+            if(keyInput.isKey(KeyEvent.VK_J) && canTurnLeft) {
                 updateHullAngleCounterClockWise();
+                lastKeyPressed = KeyEvent.VK_J;
+                canTurnRight = true;
             }
-            else if(keyInput.isKey(KeyEvent.VK_O)) {
+            else if(keyInput.isKey(KeyEvent.VK_O) && canTurnRight) {
                 updateHullAngleClockWise();
+                lastKeyPressed = KeyEvent.VK_O;
+                canTurnLeft = true;
             }
 
 

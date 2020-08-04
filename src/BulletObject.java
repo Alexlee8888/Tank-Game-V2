@@ -12,8 +12,8 @@ public class BulletObject implements GameObject {
     private static Image bullet_explosion_5 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion6.png");
 
     private static final int BULLET_SPEED = 12;
-    private static final int PLAYER_ONE_TANK_OBJECT_INDEX = 0;
-    private static final int PLAYER_TWO_TANK_OBJECT_INDEX = 1;
+//    private static final int PLAYER_ONE_TANK_OBJECT_INDEX = 1;
+//    private static final int PLAYER_TWO_TANK_OBJECT_INDEX = 2;
     private static final int BULLET_OFFSET = 35;
 
     private TankType tankType;
@@ -90,8 +90,8 @@ public class BulletObject implements GameObject {
     }
 
     public void checkCollisions() {
-        Rectangle playerOneGetBounds = objectHandler.getGameObjects().get(PLAYER_ONE_TANK_OBJECT_INDEX).getBounds();
-        Rectangle playerTwoGetBounds = objectHandler.getGameObjects().get(PLAYER_TWO_TANK_OBJECT_INDEX).getBounds();
+        Rectangle playerOneGetBounds = objectHandler.getGameObjects().get(objectHandler.PLAYER_ONE).getBounds();
+        Rectangle playerTwoGetBounds = objectHandler.getGameObjects().get(objectHandler.PLAYER_TWO).getBounds();
             if(playerOneGetBounds.contains(getHitPoint())) {
                 explodeBullet();
                 System.out.println("HIT P1 : bounds " + playerOneGetBounds + ", hitPoint:" + getHitPoint());

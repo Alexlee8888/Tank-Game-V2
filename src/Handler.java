@@ -6,9 +6,8 @@ import java.util.List;
 public class Handler {
     private List<GameObject> gameObjects = new ArrayList<>();
     private KeyInput keyInput;
-
-    private int scoreP1 = 0;
-    private int scoreP2 = 0;
+    public static int PLAYER_ONE = 0;
+    public static int PLAYER_TWO = 1;
 
     public Handler(KeyInput keyInput) {
         this.keyInput = keyInput;
@@ -40,5 +39,14 @@ public class Handler {
         return gameObjects;
     }
 
+    public void setTankIndexes() {
+        for (int i = 0; i < gameObjects.size(); i++) {
+            if(gameObjects.get(i)instanceof TankObject) {
+                PLAYER_ONE = i;
+                PLAYER_TWO = i++;
+                break;
+            }
+        }
+    }
 
 }

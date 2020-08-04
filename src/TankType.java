@@ -8,15 +8,15 @@ public class TankType {
     private static Image P1_BULLET_IMAGE = Toolkit.getDefaultToolkit().getImage("alex_bullet.png");
     private static Image P2_BULLET_IMAGE = Toolkit.getDefaultToolkit().getImage("chris_tank_bullet.png");
 
-    private static int HULL_HEIGHTP1 = 105;
-    private static int HULL_WIDTHP1 = 130;
-    private static int TURRET_HEIGHTP1 = 70;
-    private static int TURRET_WIDTHP1 = 250;
+    private static int HULL_HEIGHTP1 = 105 * 2 / 3;
+    private static int HULL_WIDTHP1 = 130 * 2 / 3;
+    private static int TURRET_HEIGHTP1 = 70 * 2 / 3;
+    private static int TURRET_WIDTHP1 = 250 * 2 / 3;
 
-    private static int HULL_HEIGHTP2 = 105;
-    private static int HULL_WIDTHP2 = 160;
-    private static int TURRET_HEIGHTP2 = 70;
-    private static int TURRET_WIDTHP2 = 250;
+    private static int HULL_HEIGHTP2 = 105 * 2 / 3;
+    private static int HULL_WIDTHP2 = 160 * 2 / 3;
+    private static int TURRET_HEIGHTP2 = 70 * 2 / 3;
+    private static int TURRET_WIDTHP2 = 250 * 2 / 3;
 
 
     public static TankType PLAYER_ONE_TANK_TYPE = new TankType(P1_HULL, P1_TURRET, P1_BULLET_IMAGE, GameObjectType.PLAYER_ONE, HULL_HEIGHTP1, HULL_WIDTHP1, TURRET_HEIGHTP1, TURRET_WIDTHP1);

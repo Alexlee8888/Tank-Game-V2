@@ -1,14 +1,23 @@
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Game extends Canvas implements Runnable {
 
     private static final long serialVersionUID = 1L;
 
+    private static int backgroundWidth = 240 * 25 / 6;
+    private static int backgroundHeight = 204 * 25 / 6;
+    private static int canvasWidth = backgroundWidth;
+    private static int canvasHeight = backgroundHeight + 22;
 
+
+    private static Image BACKGROUND = Toolkit.getDefaultToolkit().getImage("background.png");
 //    public static final Dimension windowDimension = Toolkit.getDefaultToolkit().getScreenSize();
-    public static final Dimension windowDimension = new Dimension(1000, 750);
+    public static final Dimension windowDimension = new Dimension(canvasWidth, canvasHeight);
 
 
 
@@ -20,16 +29,40 @@ public class Game extends Canvas implements Runnable {
 
 
 
-    public Game() {
-
+    public Game() throws IOException {
         new Window(windowDimension, this, "Tank Game");
-
         keyInput = new KeyInput();
         this.addKeyListener(keyInput);
         objectHandler = new Handler(keyInput);
 
+
+
+
+
+//        WallObject wallObjectLeft = new WallObject(0, 0, 25, backgroundHeight, objectHandler);
+//        objectHandler.addObject(wallObjectLeft);
+//        WallObject wallObjectTop = new WallObject(0, 0, backgroundWidth, 25, objectHandler);
+//        objectHandler.addObject(wallObjectTop);
+//        WallObject wallObjectRight = new WallObject(backgroundWidth - 25, 0, 25, backgroundHeight, objectHandler);
+//        objectHandler.addObject(wallObjectRight);
+//        WallObject wallObjectBottom = new WallObject(0, backgroundHeight - 25, backgroundWidth - 200, 25, objectHandler);
+//        objectHandler.addObject(wallObjectBottom);
+        Scanner sc = new Scanner(new File("WallPlacements"));
+
+
+        for (int i = 0; i < (34 * 40); i++) {
+            if(sc.nextInt() == 0) {
+                continue;
+            }
+            WallObject wallObject = new WallObject(((i % 40) * 25) , (i / 40) * 25, objectHandler);
+            objectHandler.addObject(wallObject);
+        }
+
         objectHandler.addObject(new TankObject(100, 500, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
-        objectHandler.addObject(new TankObject(800, 500, TankType.PLAYER_TWO_TANK_TYPE, objectHandler ));
+        objectHandler.addObject(new TankObject(800, 500, TankType.PLAYER_TWO_TANK_TYPE, objectHandler));
+
+        objectHandler.setTankIndexes();
+
         requestFocus();
         start();
     }
@@ -152,6 +185,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void render() {
+
         BufferStrategy bs = this.getBufferStrategy();
         if(bs == null) {
             this.createBufferStrategy(3);
@@ -159,7 +193,7 @@ public class Game extends Canvas implements Runnable {
         }
         Graphics g = bs.getDrawGraphics();
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, (int) windowDimension.getWidth(), (int) windowDimension.getHeight());
+        g.drawImage(BACKGROUND, 0, 0, backgroundWidth, backgroundHeight,this);
         // custom logic code
         renderGame(g);
         bs.show();
@@ -168,12 +202,10 @@ public class Game extends Canvas implements Runnable {
 
     // game rendering code
     private void renderGame(Graphics g) {
-
-
         objectHandler.render(g);
     }
 
-    public static void main (String [] args) {
+    public static void main (String [] args) throws IOException {
         new Game();
 
     }
