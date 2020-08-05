@@ -66,26 +66,26 @@ public class WallObject implements GameObject {
 
         }
         if(playerTwo.getBounds().intersects(getBounds())) {
-            int lastKeyPressed2 = playerOne.lastKeyPressed;
-            if (lastKeyPressed2 == 38) {
-                playerOne.setMoveForward(false);
-                playerOne.moveBackward();
-                playerOne.setMoveForward(true);
+            int lastKeyPressed2 = playerTwo.lastKeyPressed;
+            if (lastKeyPressed2 == 73) {
+                playerTwo.setMoveForward(false);
+                playerTwo.moveBackward();
+                playerTwo.setMoveForward(true);
             }
-            else if (lastKeyPressed2 == 40) {
-                playerOne.setMoveBackward(false);
-                playerOne.moveForward();
-                playerOne.setMoveBackward(true);
+            else if (lastKeyPressed2 == 75) {
+                playerTwo.setMoveBackward(false);
+                playerTwo.moveForward();
+                playerTwo.setMoveBackward(true);
             }
-            if (lastKeyPressed2 == 37) {
-                playerOne.setTurnLeft(false);
+            if (lastKeyPressed2 == 74) {
+                playerTwo.setTurnLeft(false);
 //                playerOne.moveBackward();
-                playerOne.setTurnLeft(true);
+                playerTwo.setTurnLeft(true);
             }
-            else if (lastKeyPressed2 == 39) {
-                playerOne.setTurnRight(false);
+            else if (lastKeyPressed2 == 79) {
+                playerTwo.setTurnRight(false);
 //                playerOne.moveForward();
-                playerOne.setTurnRight(true);
+                playerTwo.setTurnRight(true);
             }
 //            switch (playerTwo.lastKeyPressed) {
 //                case 73:
@@ -116,7 +116,7 @@ public class WallObject implements GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(new Color(0, 0, 0, 0));
+        g.setColor(new Color(255, 0, 0, 100));
         g.fillRect(topLeftX, topLeftY, WIDTH, HEIGHT);
     }
 

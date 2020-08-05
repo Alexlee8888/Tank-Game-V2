@@ -21,8 +21,10 @@ public class TankPartsObject extends AbstractGameObject {
 
     @Override
     public void render(Graphics g) {
+
         Graphics2D g2d = (Graphics2D) g;
         // draw rect
+
 
         AffineTransform identity = new AffineTransform();
 
@@ -35,6 +37,8 @@ public class TankPartsObject extends AbstractGameObject {
         // draw tank
 
         g.setColor(Color.RED);
+
+        g2d.draw(getBounds());
 
 //        g.setColor(Color.GREEN);
 //        g2d.draw(getBounds());
@@ -51,6 +55,25 @@ public class TankPartsObject extends AbstractGameObject {
     public Rectangle getBounds() {
         return new Rectangle((int) getTopLeftX(), (int) getTopLeftY(), getWidth(), getHeight());
     }
+
+//    public Point rotate_point(double cx,double cy,int angle,Point p)
+//    {
+//        double s = Math.sin(angle);
+//        double c = Math.cos(angle);
+//
+//        // translate point back to origin:
+//        ((int) (getTopLeftX() - getX())) ;
+//        p.y -= cy;
+//
+//        // rotate point
+//        double xnew = p.x * c - p.y * s;
+//        double ynew = p.x * s + p.y * c;
+//
+//        // translate point back:
+//        p.x = xnew + cx;
+//        p.y = ynew + cy;
+//        return p;
+//    }
 
 
 }

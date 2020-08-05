@@ -139,13 +139,17 @@ public class TankObject implements GameObject {
                 lastKeyPressed = KeyEvent.VK_RIGHT;
                 canTurnLeft = true;
             }
-            long nowP1 = System.currentTimeMillis();
-            if(keyInput.isKeyUp(KeyEvent.VK_SPACE)) {
-                if(nowP1 - lastShootP1 > threshold) {
+//            long nowP1 = System.currentTimeMillis();
+//            if(keyInput.isKeyUp(KeyEvent.VK_SPACE)) {
+//                if(nowP1 - lastShootP1 > threshold) {
+//                    BulletObject newBullet = new BulletObject(tankTurret.getX(), tankTurret.getY(), tankTurret.getAngle(), tankType, objectHandler);
+//                    objectHandler.addObject(newBullet);
+//                    lastShootP1 = nowP1;
+//                }
+//            }
+            if(keyInput.isKey(KeyEvent.VK_SPACE)) {
                     BulletObject newBullet = new BulletObject(tankTurret.getX(), tankTurret.getY(), tankTurret.getAngle(), tankType, objectHandler);
                     objectHandler.addObject(newBullet);
-                    lastShootP1 = nowP1;
-                }
             }
         }
         if(tankType.getGameObjectType() == GameObjectType.PLAYER_TWO) {
@@ -202,5 +206,6 @@ public class TankObject implements GameObject {
     public Rectangle getBounds() {
         return tankHull.getBounds();
     }
+
 
 }

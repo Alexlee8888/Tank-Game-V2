@@ -8,6 +8,16 @@ public abstract class AbstractGameObject implements GameObject {
     private int width;
     private Image objectImage;
     private GameObjectType gameObjectType;
+    private int topLeftX;
+    private int topLeftY;
+    private int topRightX;
+    private int topRightY;
+    private int bottomLeftX;
+    private int bottomLeftY;
+    private int bottomRightX;
+    private int bottomRightY;
+
+
 
     public AbstractGameObject(int x, int y, int height, int width, Image image, GameObjectType gameObjectType) {
         this.x = x;
@@ -18,6 +28,69 @@ public abstract class AbstractGameObject implements GameObject {
         this.gameObjectType = gameObjectType;
     }
 
+    public void setTopLeftX(int topLeftX) {
+        this.topLeftX = topLeftX;
+    }
+
+    public void setTopLeftY(int topLeftY) {
+        this.topLeftY = topLeftY;
+    }
+
+    public void setTopRightX(int topRightX) {
+        this.topRightX = topRightX;
+    }
+
+    public void setTopRightY(int topRightY) {
+        this.topRightY = topRightY;
+    }
+
+    public void setBottomLeftX(int bottomLeftX) {
+        this.bottomLeftX = bottomLeftX;
+    }
+
+    public void setBottomLeftY(int bottomLeftY) {
+        this.bottomLeftY = bottomLeftY;
+    }
+
+    public void setBottomRightX(int bottomRightX) {
+        this.bottomRightX = bottomRightX;
+    }
+
+    public void setBottomRightY(int bottomRightY) {
+        this.bottomRightY = bottomRightY;
+    }
+
+    public double getTopLeftX() {
+        return getX() - (width/2.0);
+    }
+
+    public double getTopLeftY() {
+        return getY() - (height/2.0);
+    }
+
+    public int getTopRightX() {
+        return topRightX;
+    }
+
+    public int getTopRightY() {
+        return topRightY;
+    }
+
+    public int getBottomLeftX() {
+        return bottomLeftX;
+    }
+
+    public int getBottomLeftY() {
+        return bottomLeftY;
+    }
+
+    public int getBottomRightX() {
+        return bottomRightX;
+    }
+
+    public int getBottomRightY() {
+        return bottomRightY;
+    }
 
 
     public Image getObjectImage() {
@@ -46,14 +119,6 @@ public abstract class AbstractGameObject implements GameObject {
 
     public int getAngle() {
         return angle;
-    }
-
-    public double getTopLeftX() {
-        return x - (width/2);
-    }
-
-    public double getTopLeftY() {
-        return y - (height/2);
     }
 
     public void setGameObjectType(GameObjectType gameObjectType) {

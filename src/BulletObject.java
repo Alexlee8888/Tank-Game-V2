@@ -91,27 +91,11 @@ public class BulletObject implements GameObject {
 
     public void checkCollisions() {
         for(int i = 0; i < objectHandler.getHittableObjects().size(); i++) {
-            if(objectHandler.getHittableObjects().get(i).getBounds().contains(getHitPoint())) {
+            GameObject gameObject = objectHandler.getHittableObjects().get(i);
+            if(gameObject.getBounds().contains(getHitPoint())) {
                 explodeBullet();
             }
         }
-//        Rectangle playerOneGetBounds = objectHandler.getGameObjects().get(objectHandler.PLAYER_ONE).getBounds();
-//        Rectangle playerTwoGetBounds = objectHandler.getGameObjects().get(objectHandler.PLAYER_TWO).getBounds();
-//            if(playerOneGetBounds.contains(getHitPoint())) {
-//                explodeBullet();
-//                System.out.println("HIT P1 : bounds " + playerOneGetBounds + ", hitPoint:" + getHitPoint());
-//                System.out.println("----- x = " + playerOneGetBounds.getX() + " < " + getHitPoint().x + " < " + (playerOneGetBounds.getX() + playerOneGetBounds.getWidth()));
-//                System.out.println("----- y = " + playerOneGetBounds.getY() + " < " + getHitPoint().y + " < " + (playerOneGetBounds.getY() + playerOneGetBounds.getHeight()));
-//
-//            }
-//            if(playerTwoGetBounds.contains(getHitPoint())) {
-//                explodeBullet();
-//                System.out.println("HIT P2 : bounds " + playerTwoGetBounds + ", hitPoint:" + getHitPoint());
-//                System.out.println("----- x = " + playerTwoGetBounds.getX() + " < " + getHitPoint().x + " < " + (playerTwoGetBounds.getX() + playerTwoGetBounds.getWidth()));
-//                System.out.println("----- y = " + playerTwoGetBounds.getY() + " < " + getHitPoint().y + " < " + (playerTwoGetBounds.getY() + playerTwoGetBounds.getHeight()));
-//
-//
-//            }
     }
 
     @Override
