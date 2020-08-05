@@ -51,15 +51,23 @@ public class Game extends Canvas implements Runnable {
 
 
         for (int i = 0; i < (34 * 40); i++) {
-            if(sc.nextInt() == 0) {
+            int currInt = sc.nextInt();
+            if(currInt == 0) {
                 continue;
             }
             WallObject wallObject = new WallObject(((i % 40) * 25) , (i / 40) * 25, objectHandler);
             objectHandler.addObject(wallObject);
+            if(currInt == 1) {
+                objectHandler.addHittableObject(wallObject);
+            }
         }
 
         objectHandler.addObject(new TankObject(100, 500, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
-        objectHandler.addObject(new TankObject(800, 500, TankType.PLAYER_TWO_TANK_TYPE, objectHandler));
+        objectHandler.addHittableObject(new TankObject(100, 500, TankType.PLAYER_ONE_TANK_TYPE, objectHandler));
+        objectHandler.addObject(new TankObject(100, 700, TankType.PLAYER_TWO_TANK_TYPE, objectHandler));
+        objectHandler.addHittableObject(new TankObject(100, 700, TankType.PLAYER_TWO_TANK_TYPE, objectHandler));
+
+
 
         objectHandler.setTankIndexes();
 

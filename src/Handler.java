@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Handler {
     private List<GameObject> gameObjects = new ArrayList<>();
+    private List<GameObject> hittableObjects = new ArrayList<>();
     private KeyInput keyInput;
     public static int PLAYER_ONE = 0;
     public static int PLAYER_TWO = 1;
@@ -27,6 +28,18 @@ public class Handler {
         }
     }
 
+    public void addHittableObject(GameObject gameObject) {
+        hittableObjects.add(gameObject);
+    }
+
+    public void removeHittableObject(GameObject gameObject) {
+        hittableObjects.remove(gameObject);
+    }
+
+    public List<GameObject> getHittableObjects() {
+        return hittableObjects;
+    }
+
     public void addObject(GameObject gameObject) {
         gameObjects.add(gameObject);
     }
@@ -43,7 +56,7 @@ public class Handler {
         for (int i = 0; i < gameObjects.size(); i++) {
             if(gameObjects.get(i)instanceof TankObject) {
                 PLAYER_ONE = i;
-                PLAYER_TWO = i++;
+                PLAYER_TWO = ++i;
                 break;
             }
         }

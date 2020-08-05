@@ -6,7 +6,7 @@ public class TankObject implements GameObject {
 
     private static int TURRET_DEGREES_TURNED = 1;
     private static int HULL_DEGRESS_TURNED = 2;
-    private static int HULLSPEED = 6;
+    private static int HULLSPEED = 3;
     private static int ANGLE = 0;
     private TankType tankType;
     private TankPartsObject tankHull;
@@ -123,11 +123,11 @@ public class TankObject implements GameObject {
             }
             if(keyInput.isKey(KeyEvent.VK_Z)) {
                 updateTurretAngleCounterClockWise(0);
-                lastKeyPressed = KeyEvent.VK_Z;
+//                lastKeyPressed = KeyEvent.VK_Z;
             }
             else if(keyInput.isKey(KeyEvent.VK_X)) {
                 updateTurretAngleClockWise(0);
-                lastKeyPressed = KeyEvent.VK_X;
+//                lastKeyPressed = KeyEvent.VK_X;
             }
             if(keyInput.isKey(KeyEvent.VK_LEFT) && canTurnLeft) {
                 updateHullAngleCounterClockWise();
@@ -161,11 +161,11 @@ public class TankObject implements GameObject {
             }
             if(keyInput.isKey(KeyEvent.VK_W) ) {
                 updateTurretAngleCounterClockWise(0);
-                lastKeyPressed = KeyEvent.VK_W;
+//                lastKeyPressed = KeyEvent.VK_W;
             }
             else if(keyInput.isKey(KeyEvent.VK_E) ) {
                 updateTurretAngleClockWise(0);
-                lastKeyPressed = KeyEvent.VK_E;
+//                lastKeyPressed = KeyEvent.VK_E;
             }
             if(keyInput.isKey(KeyEvent.VK_J) && canTurnLeft) {
                 updateHullAngleCounterClockWise();
