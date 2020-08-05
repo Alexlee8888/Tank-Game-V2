@@ -1,6 +1,9 @@
-import java.awt.*;
+import javafx.scene.shape.Circle;
 
-public class WallObject implements GameObject {
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+
+public class WallObject extends AbstractGameObject implements GameObject {
 
     private static final int WIDTH =  25;
     private static final int HEIGHT =  25;
@@ -10,6 +13,7 @@ public class WallObject implements GameObject {
     private Handler handler;
 
     public WallObject(int topLeftX, int topLeftY, Handler handler) {
+        super(topLeftX + 25 / 2, topLeftY + 25 / 2, HEIGHT, WIDTH, null, GameObjectType.WALL);
         this.handler = handler;
         this.topLeftX = topLeftX;
         this.topLeftY = topLeftY;
@@ -18,7 +22,7 @@ public class WallObject implements GameObject {
     public void tick(KeyInput keyInput) {
         TankObject playerOne = (TankObject) handler.getGameObjects().get(handler.PLAYER_ONE);
         TankObject playerTwo = (TankObject) handler.getGameObjects().get(handler.PLAYER_TWO);
-        if(playerOne.getBounds().intersects(getBounds())) {
+        if(playerOne.getBounds().intersects(getRectangleBounds())) {
             int lastKeyPressed = playerOne.lastKeyPressed;
 //            switch (playerOne.lastKeyPressed) {
 //                case 38:
@@ -65,30 +69,51 @@ public class WallObject implements GameObject {
 
 
         }
-        if(playerTwo.getBounds().intersects(getBounds())) {
-            switch (playerTwo.lastKeyPressed) {
-                case 73:
-                    playerTwo.setMoveForward(false);
-                    playerTwo.moveBackward();
-                    playerTwo.setMoveForward(true);
-                    break;
-                case 75:
-                    playerTwo.setMoveBackward(false);
-                    playerTwo.moveForward();
-                    playerTwo.setMoveBackward(true);
-                    break;
-                case 74:
-                    playerTwo.setTurnLeft(false);
-//                    playerTwo.updateHullAngleClockWise();
-//                    playerTwo.setTurnLeft(true);
-                    break;
-
-                case 79:
-                    playerTwo.setTurnRight(false);
-//                    playerTwo.updateHullAngleCounterClockWise();
-//                    playerTwo.setTurnRight(true);
-                    break;
+        if(playerTwo.getBounds().intersects(getRectangleBounds())) {
+            int lastKeyPressed = playerTwo.lastKeyPressed;
+            if (lastKeyPressed == 73) {
+                playerTwo.setMoveForward(false);
+                playerTwo.moveBackward();
+                playerTwo.setMoveForward(true);
             }
+            else if (lastKeyPressed == 75) {
+                playerTwo.setMoveBackward(false);
+                playerTwo.moveForward();
+                playerTwo.setMoveBackward(true);
+            }
+            if (lastKeyPressed == 74) {
+                playerTwo.setTurnLeft(false);
+//                playerOne.moveBackward();
+                playerTwo.setTurnLeft(true);
+            }
+            else if (lastKeyPressed == 79) {
+                playerTwo.setTurnRight(false);
+//                playerOne.moveForward();
+                playerTwo.setTurnRight(true);
+            }
+//            switch (playerTwo.lastKeyPressed) {
+//                case 73:
+//                    playerTwo.setMoveForward(false);
+//                    playerTwo.moveBackward();
+//                    playerTwo.setMoveForward(true);
+//                    break;
+//                case 75:
+//                    playerTwo.setMoveBackward(false);
+//                    playerTwo.moveForward();
+//                    playerTwo.setMoveBackward(true);
+//                    break;
+//                case 74:
+//                    playerTwo.setTurnLeft(false);
+////                    playerTwo.updateHullAngleClockWise();
+////                    playerTwo.setTurnLeft(true);
+//                    break;
+//
+//                case 79:
+//                    playerTwo.setTurnRight(false);
+////                    playerTwo.updateHullAngleCounterClockWise();
+////                    playerTwo.setTurnRight(true);
+//                    break;
+//            }
 
         }
     }
@@ -100,7 +125,13 @@ public class WallObject implements GameObject {
     }
 
     @Override
-    public Rectangle getBounds() {
-        return new Rectangle(topLeftX, topLeftY, WIDTH, HEIGHT);
+    public Polygon getBounds() {
+        return null;
     }
+
+    public Rectangle2D getRectangleBounds() {
+        Rectangle2D r = new Rectangle2D.Double(getTopLeftX(), getTopLeftY(), WIDTH, HEIGHT);
+        return r;
+    }
+
 }

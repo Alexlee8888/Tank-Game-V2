@@ -1,12 +1,15 @@
+import javafx.scene.shape.Circle;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Path2D;
 
 public class TankObject implements GameObject {
 
 
     private static int TURRET_DEGREES_TURNED = 1;
     private static int HULL_DEGRESS_TURNED = 2;
-    private static int HULLSPEED = 6;
+    private static int HULLSPEED = 3;
     private static int ANGLE = 0;
     private TankType tankType;
     private TankPartsObject tankHull;
@@ -50,11 +53,13 @@ public class TankObject implements GameObject {
     public void updateHullAngleClockWise () {
         tankHull.setAngle(tankHull.getAngle() + HULL_DEGRESS_TURNED);
         updateTurretAngleClockWise(1);
+        tankHull.rotateBounds();
     }
 
     public void updateHullAngleCounterClockWise() {
         tankHull.setAngle(tankHull.getAngle() - HULL_DEGRESS_TURNED);
         updateTurretAngleCounterClockWise(1);
+        tankTurret.rotateBounds();
     }
 
     public void updateTurretAngleClockWise (int option) {
@@ -95,6 +100,8 @@ public class TankObject implements GameObject {
         double deltaY = forwardBackward * (hullSpeed*Math.sin(Math.toRadians(tankHull.getAngle())));
         tankHull.setX(tankHull.getX() + deltaX);
         tankHull.setY(tankHull.getY() + deltaY);
+
+        tankHull.translateBounds(HULLSPEED);
     }
 
     public void moveTurret(int forwardBackward) {
@@ -102,6 +109,8 @@ public class TankObject implements GameObject {
         double deltaY = forwardBackward * (hullSpeed*Math.sin(Math.toRadians(tankHull.getAngle())));
         tankTurret.setX(tankTurret.getX() + deltaX);
         tankTurret.setY(tankTurret.getY() + deltaY);
+
+        tankTurret.translateBounds(HULLSPEED);
     }
 
     @Override
@@ -199,8 +208,10 @@ public class TankObject implements GameObject {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Polygon getBounds() {
         return tankHull.getBounds();
     }
+
+
 
 }

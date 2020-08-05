@@ -6,6 +6,15 @@ public abstract class AbstractGameObject implements GameObject {
     private int angle = 0;
     private int height;
     private int width;
+    private int topLeftX;
+    private int topLeftY;
+    private int topRightX;
+    private int topRightY;
+    private int bottomLeftX;
+    private int bottomLeftY;
+    private int bottomRightX;
+    private int bottomRightY;
+
     private Image objectImage;
     private GameObjectType gameObjectType;
 
@@ -16,9 +25,15 @@ public abstract class AbstractGameObject implements GameObject {
         this.width = width;
         this.objectImage = image;
         this.gameObjectType = gameObjectType;
+        this.topLeftX = x - (width/2);
+        this.topLeftY = y - (height/2);
+        this.topRightX = x + (width/2);
+        this.topRightY = y - (height/2);
+        this.bottomLeftX = x - (width/2);
+        this.bottomLeftY = y + (height/2);
+        this.bottomRightX = x + (width/2);
+        this.bottomRightY = y + (height/2);
     }
-
-
 
     public Image getObjectImage() {
         return objectImage;
@@ -48,12 +63,68 @@ public abstract class AbstractGameObject implements GameObject {
         return angle;
     }
 
-    public double getTopLeftX() {
-        return x - (width/2);
+    public int getTopLeftX() {
+        return topLeftX;
     }
 
-    public double getTopLeftY() {
-        return y - (height/2);
+    public int getTopLeftY() {
+        return topLeftY;
+    }
+
+    public int getTopRightX() {
+        return topRightX;
+    }
+
+    public int getTopRightY() {
+        return topRightY;
+    }
+
+    public int getBottomRightX() {
+        return bottomRightX;
+    }
+
+    public int getBottomRightY() {
+        return bottomRightY;
+    }
+
+    public int getBottomLeftX() {
+        return bottomLeftX;
+    }
+
+    public int getBottomLeftY() {
+        return bottomLeftY;
+    }
+
+    public void setTopLeftX(int topLeftX) {
+        this.topLeftX = topLeftX;
+    }
+
+    public void setTopLeftY(int topLeftY) {
+        this.topLeftY = topLeftY;
+    }
+
+    public void setTopRightX(int topRightX) {
+        this.topRightX = topRightX;
+    }
+
+    public void setTopRightY(int topRightY) {
+        this.topRightY = topRightY;
+    }
+
+    public void setBottomRightX(int bottomRightX) {
+        this.bottomRightX = bottomRightX;
+    }
+
+    public void setBottomRightY(int bottomRightY) {
+        this.bottomRightY = bottomRightY;
+    }
+
+    public void setBottomLeftX(int bottomLeftX) {
+        this.bottomLeftX = bottomLeftX;
+    }
+
+    public void setBottomLeftY(int bottomLeftY) {
+        this.bottomLeftY = bottomLeftY;
     }
 
     public void setGameObjectType(GameObjectType gameObjectType) {
