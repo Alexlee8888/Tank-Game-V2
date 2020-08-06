@@ -6,7 +6,7 @@ public class TankObject implements GameObject {
 
     private static int TURRET_DEGREES_TURNED = 1;
     private static int HULL_DEGRESS_TURNED = 2;
-    private static int HULLSPEED = 3;
+    private static int HULL_SPEED = 3;
     private static int ANGLE = 0;
     private TankType tankType;
     private TankPartsObject tankHull;
@@ -26,7 +26,7 @@ public class TankObject implements GameObject {
     public TankObject(int x, int y, TankType tankType, Handler objectHandler) {
         this.tankType = tankType;
         this.objectHandler = objectHandler;
-        this.hullSpeed = HULLSPEED;
+        this.hullSpeed = HULL_SPEED;
         tankHull = new TankPartsObject(x, y, tankType.getHullHeight(), tankType.getHullWidth(), tankType.getHullImage(), tankType.getGameObjectType());
         tankTurret = new TankPartsObject(x, y, tankType.getTurretHeight(), tankType.getTurretWidth(), tankType.getTurretImage(), tankType.getGameObjectType());
     }
@@ -50,11 +50,13 @@ public class TankObject implements GameObject {
     public void updateHullAngleClockWise () {
         tankHull.setAngle(tankHull.getAngle() + HULL_DEGRESS_TURNED);
         updateTurretAngleClockWise(1);
+        tankHull.rotatePoint(-HULL_DEGRESS_TURNED);
     }
 
     public void updateHullAngleCounterClockWise() {
         tankHull.setAngle(tankHull.getAngle() - HULL_DEGRESS_TURNED);
         updateTurretAngleCounterClockWise(1);
+        tankHull.rotatePoint(HULL_DEGRESS_TURNED);
     }
 
     public void updateTurretAngleClockWise (int option) {
@@ -78,6 +80,7 @@ public class TankObject implements GameObject {
             case 1:
                 tankTurret.setAngle(tankTurret.getAngle() - HULL_DEGRESS_TURNED);
         }
+
     }
 
     public void moveForward() {
@@ -93,15 +96,15 @@ public class TankObject implements GameObject {
     public void moveHull(int forwardBackward) {
         double deltaX = forwardBackward * (hullSpeed*Math.cos(Math.toRadians(tankHull.getAngle())));
         double deltaY = forwardBackward * (hullSpeed*Math.sin(Math.toRadians(tankHull.getAngle())));
-        tankHull.setX(tankHull.getX() + deltaX);
-        tankHull.setY(tankHull.getY() + deltaY);
+        tankHull.setCenterX(tankHull.getCenterX() + deltaX);
+        tankHull.setCenterY(tankHull.getCenterY() + deltaY);
     }
 
     public void moveTurret(int forwardBackward) {
         double deltaX = forwardBackward * (hullSpeed*Math.cos(Math.toRadians(tankHull.getAngle())));
         double deltaY = forwardBackward * (hullSpeed*Math.sin(Math.toRadians(tankHull.getAngle())));
-        tankTurret.setX(tankTurret.getX() + deltaX);
-        tankTurret.setY(tankTurret.getY() + deltaY);
+        tankTurret.setCenterX(tankTurret.getCenterX() + deltaX);
+        tankTurret.setCenterY(tankTurret.getCenterY() + deltaY);
     }
 
     @Override
@@ -111,6 +114,7 @@ public class TankObject implements GameObject {
                 moveForward();
                 lastKeyPressed = KeyEvent.VK_UP;
                 canMoveBackward = true;
+
 //                canTurnRight = true;
 //                canTurnLeft = true;
             }
@@ -139,18 +143,20 @@ public class TankObject implements GameObject {
                 lastKeyPressed = KeyEvent.VK_RIGHT;
                 canTurnLeft = true;
             }
-//            long nowP1 = System.currentTimeMillis();
-//            if(keyInput.isKeyUp(KeyEvent.VK_SPACE)) {
-//                if(nowP1 - lastShootP1 > threshold) {
-//                    BulletObject newBullet = new BulletObject(tankTurret.getX(), tankTurret.getY(), tankTurret.getAngle(), tankType, objectHandler);
-//                    objectHandler.addObject(newBullet);
-//                    lastShootP1 = nowP1;
-//                }
-//            }
-            if(keyInput.isKey(KeyEvent.VK_SPACE)) {
-                    BulletObject newBullet = new BulletObject(tankTurret.getX(), tankTurret.getY(), tankTurret.getAngle(), tankType, objectHandler);
+            long nowP1 = System.currentTimeMillis();
+            if(keyInput.isKeyUp(KeyEvent.VK_SPACE)) {
+                if(nowP1 - lastShootP1 > threshold) {
+                    BulletObject newBullet = new BulletObject(tankTurret.getCenterX(), tankTurret.getCenterY(), tankTurret.getAngle(), tankType, objectHandler);
                     objectHandler.addObject(newBullet);
+                    lastShootP1 = nowP1;
+                    GameSounds.playSimpleBombExplosion1();
+
+                }
             }
+//            if(keyInput.isKey(KeyEvent.VK_SPACE)) {
+//                    BulletObject newBullet = new BulletObject(tankTurret.getCenterX(), tankTurret.getCenterY(), tankTurret.getAngle(), tankType, objectHandler);
+//                    objectHandler.addObject(newBullet);
+//            }
         }
         if(tankType.getGameObjectType() == GameObjectType.PLAYER_TWO) {
             if(keyInput.isKey(KeyEvent.VK_I) && canMoveForward) {
@@ -186,11 +192,16 @@ public class TankObject implements GameObject {
             long nowP2 = System.currentTimeMillis();
             if(keyInput.isKeyUp(KeyEvent.VK_F)) {
                 if(nowP2 - lastShootP2 > threshold) {
-                    BulletObject newBullet = new BulletObject(tankTurret.getX(), tankTurret.getY(), tankTurret.getAngle(), tankType, objectHandler);
+                    BulletObject newBullet = new BulletObject(tankTurret.getCenterX(), tankTurret.getCenterY(), tankTurret.getAngle(), tankType, objectHandler);
                     objectHandler.addObject(newBullet);
                     lastShootP2 = nowP2;
+                    GameSounds.playShotEffect3();
                 }
             }
+//            if(keyInput.isKey(KeyEvent.VK_F)) {
+//                BulletObject newBullet = new BulletObject(tankTurret.getCenterX(), tankTurret.getCenterY(), tankTurret.getAngle(), tankType, objectHandler);
+//                objectHandler.addObject(newBullet);
+//            }
         }
     }
 
@@ -205,6 +216,11 @@ public class TankObject implements GameObject {
     @Override
     public Rectangle getBounds() {
         return tankHull.getBounds();
+    }
+
+    @Override
+    public Polygon getPolygonBounds() {
+        return tankHull.getPolygonBounds();
     }
 
 

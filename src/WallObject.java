@@ -116,12 +116,18 @@ public class WallObject implements GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(new Color(255, 0, 0, 100));
+        g.setColor(new Color(0, 0, 0, 0));
         g.fillRect(topLeftX, topLeftY, WIDTH, HEIGHT);
     }
 
     @Override
     public Rectangle getBounds() {
         return new Rectangle(topLeftX, topLeftY, WIDTH, HEIGHT);
+
+    }
+
+    @Override
+    public Polygon getPolygonBounds() {
+        return null;
     }
 }

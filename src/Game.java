@@ -62,8 +62,8 @@ public class Game extends Canvas implements Runnable {
             }
         }
 
-        TankObject player1 = new TankObject(100, 500, TankType.PLAYER_ONE_TANK_TYPE, objectHandler);
-        TankObject player2 = new TankObject(100, 700, TankType.PLAYER_TWO_TANK_TYPE, objectHandler);
+        TankObject player1 = new TankObject(100, 750, TankType.PLAYER_ONE_TANK_TYPE, objectHandler);
+        TankObject player2 = new TankObject(800, 150, TankType.PLAYER_TWO_TANK_TYPE, objectHandler);
 
         objectHandler.addObject(player1);
         objectHandler.addHittableObject(player1);

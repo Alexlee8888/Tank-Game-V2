@@ -4,17 +4,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class BulletObject implements GameObject {
-    private static Image bullet_explosion_0 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion1.png");
-    private static Image bullet_explosion_1 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion2.png");
-    private static Image bullet_explosion_2 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion3.png");
-    private static Image bullet_explosion_3 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion4.png");
-    private static Image bullet_explosion_4 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion5.png");
-    private static Image bullet_explosion_5 = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion6.png");
 
     private static final int BULLET_SPEED = 12;
 //    private static final int PLAYER_ONE_TANK_OBJECT_INDEX = 1;
 //    private static final int PLAYER_TWO_TANK_OBJECT_INDEX = 2;
-    private static final int BULLET_OFFSET = 35 / 2;
+    private static final int BULLET_OFFSET = 0;
 
     private TankType tankType;
     private Handler objectHandler;
@@ -78,6 +72,8 @@ public class BulletObject implements GameObject {
         }
         else if(countStatusTick % 5 == 0 && isExploding) {
             Image bullet_explosion = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion" + statusOfExplosions + ".png");
+//            Image bullet_explosion = Toolkit.getDefaultToolkit().getImage("chris_tank_supercharge_bullet" + statusOfExplosions + ".png");
+
             setBulletImage(bullet_explosion);
             statusOfExplosions++;
         }
@@ -92,7 +88,10 @@ public class BulletObject implements GameObject {
     public void checkCollisions() {
         for(int i = 0; i < objectHandler.getHittableObjects().size(); i++) {
             GameObject gameObject = objectHandler.getHittableObjects().get(i);
-            if(gameObject.getBounds().contains(getHitPoint())) {
+            if(gameObject instanceof TankObject && gameObject.getPolygonBounds().contains(getHitPoint())) {
+                explodeBullet();
+            }
+            else if(gameObject.getBounds().contains(getHitPoint())) {
                 explodeBullet();
             }
         }
@@ -122,12 +121,20 @@ public class BulletObject implements GameObject {
         return null;
     }
 
+    @Override
+    public Polygon getPolygonBounds() {
+        return null;
+    }
+
     public Point getHitPoint() {
         return new Point((int) (hitPointX), (int) (hitPointY));
     }
 
     public void explodeBullet() {
         isBulletMoving = false;
+        if(!isExploding) {
+            GameSounds.chooseAndPlayExplosion();
+        }
         isExploding = true;
 
     }

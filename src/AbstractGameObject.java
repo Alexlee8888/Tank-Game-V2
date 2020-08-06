@@ -2,7 +2,7 @@ import java.awt.*;
 
 public abstract class AbstractGameObject implements GameObject {
 
-    private double x, y;
+    private double centerX, centerY;
     private int angle = 0;
     private int height;
     private int width;
@@ -19,13 +19,15 @@ public abstract class AbstractGameObject implements GameObject {
 
 
 
-    public AbstractGameObject(int x, int y, int height, int width, Image image, GameObjectType gameObjectType) {
-        this.x = x;
-        this.y = y;
+    public AbstractGameObject(int centerX, int centerY, int height, int width, Image image, GameObjectType gameObjectType) {
+        this.centerX = centerX;
+        this.centerY = centerY;
         this.height = height;
         this.width = width;
         this.objectImage = image;
         this.gameObjectType = gameObjectType;
+        this.topLeftX = centerX - width/2;
+        this.topLeftY = centerY - height/2;
     }
 
     public void setTopLeftX(int topLeftX) {
@@ -61,11 +63,13 @@ public abstract class AbstractGameObject implements GameObject {
     }
 
     public double getTopLeftX() {
-        return getX() - (width/2.0);
+        topLeftX = (int) (centerX - width/2);
+        return topLeftX;
     }
 
     public double getTopLeftY() {
-        return getY() - (height/2.0);
+        topLeftY = (int) (centerY - height/2);
+        return topLeftY;
     }
 
     public int getTopRightX() {
@@ -101,12 +105,12 @@ public abstract class AbstractGameObject implements GameObject {
         return gameObjectType;
     }
 
-    public double getX() {
-        return x;
+    public double getCenterX() {
+        return centerX;
     }
 
-    public double getY() {
-        return y;
+    public double getCenterY() {
+        return centerY;
     }
 
     public int getHeight() {
@@ -125,12 +129,12 @@ public abstract class AbstractGameObject implements GameObject {
         this.gameObjectType = gameObjectType;
     }
 
-    public void setX(double x) {
-        this.x = x;
+    public void setCenterX(double centerX) {
+        this.centerX = centerX;
     }
 
-    public void setY(double y) {
-        this.y = y;
+    public void setCenterY(double centerY) {
+        this.centerY = centerY;
     }
 
     public void setWidth(int width) {
