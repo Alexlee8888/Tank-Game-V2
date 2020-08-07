@@ -1,19 +1,15 @@
 import com.sun.tools.classfile.Opcode;
 import javafx.scene.input.KeyCode;
 
+import java.awt.*;
 import java.awt.event.*;
-import java.security.Key;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-
-public class KeyInput implements KeyListener {
+public class KeyInput implements KeyListener, MouseListener {
 
     private final int NUM_KEYS = 256;
     private boolean[] keysPressed = new boolean[NUM_KEYS];
     private boolean[] keysLastPressed = new boolean[NUM_KEYS];
+    private Point mouseClicked;
 
     public void update() {
         for(int i = 0; i < NUM_KEYS; i++) {
@@ -47,6 +43,42 @@ public class KeyInput implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+
+    }
+
+    public Point getClickPoint() {
+        return mouseClicked;
+    }
+
+    public void resetClickPoint() {
+        mouseClicked = null;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int clickX = e.getX();
+        int clickY = e.getY();
+        mouseClicked = new Point(clickX, clickY);
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }

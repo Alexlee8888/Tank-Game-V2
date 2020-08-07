@@ -2,13 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Window {
+    private static JFrame frame;
 
     public Window(Dimension dimension, Game game, String title) {
 //        game.setPreferredSize(dimension);
 //        game.setMaximumSize(dimension);
 //        game.setMinimumSize(dimension);
 
-        JFrame frame = new JFrame(title);
+        frame = new JFrame(title);
         frame.setPreferredSize(dimension);
 //        frame.setMaximumSize(dimension);
 //        frame.setMinimumSize(dimension);
@@ -21,6 +22,10 @@ public class Window {
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
+    }
+
+    public JFrame getJFrame() {
+        return frame;
     }
 
 }

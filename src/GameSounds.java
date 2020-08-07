@@ -8,6 +8,26 @@ import java.io.InputStream;
 
 public class GameSounds {
 
+    // background music
+    public static void playBackgroundMusic() {
+        String tinyButtonPush = "backgroundMusic.wav";
+        InputStream in = null;
+        try {
+            in = new FileInputStream(tinyButtonPush);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        AudioStream audioStream = null;
+        try {
+            audioStream = new AudioStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        AudioPlayer.player.start(audioStream);
+
+    }
+
     // tank moving
     public static void playTankMoving() {
         String tinyButtonPush = "tank_moving.wav";

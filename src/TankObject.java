@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 public class TankObject implements GameObject {
 
 
+
     private static int TURRET_DEGREES_TURNED = 1;
     private static int HULL_DEGRESS_TURNED = 2;
     private static int HULL_SPEED = 3;
@@ -20,7 +21,10 @@ public class TankObject implements GameObject {
     private boolean canMoveBackward = true;
     private boolean canTurnLeft = true;
     private boolean canTurnRight = true;
+    private boolean canShoot = true;
+    private int health = 6;
     public int lastKeyPressed;
+
 
 
     public TankObject(int x, int y, TankType tankType, Handler objectHandler) {
@@ -29,6 +33,16 @@ public class TankObject implements GameObject {
         this.hullSpeed = HULL_SPEED;
         tankHull = new TankPartsObject(x, y, tankType.getHullHeight(), tankType.getHullWidth(), tankType.getHullImage(), tankType.getGameObjectType());
         tankTurret = new TankPartsObject(x, y, tankType.getTurretHeight(), tankType.getTurretWidth(), tankType.getTurretImage(), tankType.getGameObjectType());
+    }
+
+    public void takeDamage() {
+        if (health == 0) {
+            return;
+        }
+        health--;
+    }
+    public int getHealth() {
+        return health;
     }
 
     public void setMoveForward(boolean bool) {
@@ -107,6 +121,11 @@ public class TankObject implements GameObject {
         tankTurret.setCenterY(tankTurret.getCenterY() + deltaY);
     }
 
+    public void drawHearts(Graphics g) {
+        Image healthImage = Toolkit.getDefaultToolkit().getImage("hearts" + health + ".png");
+        g.drawImage(healthImage, (int) tankHull.getTopLeftX() + tankHull.getWidth()/2 - (healthImage.getWidth(null) * 4)/2, (int) tankHull.getTopLeftY() + tankHull.getHeight() , healthImage.getWidth(null) * 4, healthImage.getHeight(null) * 4, null);
+    }
+
     @Override
     public void tick(KeyInput keyInput) {
         if(tankType.getGameObjectType() == GameObjectType.PLAYER_ONE) {
@@ -144,7 +163,8 @@ public class TankObject implements GameObject {
                 canTurnLeft = true;
             }
             long nowP1 = System.currentTimeMillis();
-            if(keyInput.isKeyUp(KeyEvent.VK_SPACE)) {
+            if(canShoot && keyInput.isKeyUp(KeyEvent.VK_SPACE)) {
+
                 if(nowP1 - lastShootP1 > threshold) {
                     BulletObject newBullet = new BulletObject(tankTurret.getCenterX(), tankTurret.getCenterY(), tankTurret.getAngle(), tankType, objectHandler);
                     objectHandler.addObject(newBullet);
@@ -181,7 +201,7 @@ public class TankObject implements GameObject {
                 updateHullAngleCounterClockWise();
                 lastKeyPressed = KeyEvent.VK_J;
                 canTurnRight = true;
-            }
+             }
             else if(keyInput.isKey(KeyEvent.VK_O) && canTurnRight) {
                 updateHullAngleClockWise();
                 lastKeyPressed = KeyEvent.VK_O;
@@ -191,7 +211,7 @@ public class TankObject implements GameObject {
 
             long nowP2 = System.currentTimeMillis();
             if(keyInput.isKeyUp(KeyEvent.VK_F)) {
-                if(nowP2 - lastShootP2 > threshold) {
+                if(canShoot && nowP2 - lastShootP2 > threshold) {
                     BulletObject newBullet = new BulletObject(tankTurret.getCenterX(), tankTurret.getCenterY(), tankTurret.getAngle(), tankType, objectHandler);
                     objectHandler.addObject(newBullet);
                     lastShootP2 = nowP2;
@@ -207,8 +227,20 @@ public class TankObject implements GameObject {
 
     @Override
     public void render(Graphics g) {
+
+        if(health == 0){
+            setTurnRight(false);
+            setTurnLeft(false);
+            setMoveBackward(false);
+            setMoveForward(false);
+            canShoot = false;
+            return;
+        }
+
         tankHull.render(g);
         tankTurret.render(g);
+        drawHearts(g);
+
 
 
     }

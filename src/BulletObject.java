@@ -48,7 +48,7 @@ public class BulletObject implements GameObject {
                         removeBullet = true;
                     }
                 },
-                1000
+                900
         );
     }
 
@@ -89,9 +89,18 @@ public class BulletObject implements GameObject {
         for(int i = 0; i < objectHandler.getHittableObjects().size(); i++) {
             GameObject gameObject = objectHandler.getHittableObjects().get(i);
             if(gameObject instanceof TankObject && gameObject.getPolygonBounds().contains(getHitPoint())) {
+
+                if(!isExploding) {
+                    ((TankObject) gameObject).takeDamage();
+                    GameSounds.playExplosionsBlast2();
+                }
                 explodeBullet();
             }
             else if(gameObject.getBounds().contains(getHitPoint())) {
+
+                if(!isExploding) {
+                    GameSounds.chooseAndPlayExplosion();
+                }
                 explodeBullet();
             }
         }
@@ -132,9 +141,7 @@ public class BulletObject implements GameObject {
 
     public void explodeBullet() {
         isBulletMoving = false;
-        if(!isExploding) {
-            GameSounds.chooseAndPlayExplosion();
-        }
+
         isExploding = true;
 
     }
