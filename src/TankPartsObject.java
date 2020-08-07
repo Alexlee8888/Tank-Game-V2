@@ -28,13 +28,14 @@ public class TankPartsObject extends AbstractGameObject {
 
         g2d.setTransform(identity);
         g.setColor(Color.RED);
-        g2d.fillOval((int) (getTopLeftX() - 4), (int) (getTopLeftY() - 4), 8, 8);
+//        g2d.fillOval((int) (getTopLeftX() - 4), (int) (getTopLeftY() - 4), 8, 8);
+
         // translate tank
         //g2d.translate(getCenterX(), getCenterY());
         // rotate tank
 
 
-        g2d.draw(getPolygonBounds());
+//        g2d.draw(getPolygonBounds());
 
         g2d.rotate(Math.toRadians(getAngle()), getCenterX(), getCenterY());
         // draw tank
