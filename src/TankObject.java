@@ -123,7 +123,7 @@ public class TankObject implements GameObject {
 
     public void drawHearts(Graphics g) {
         Image healthImage = Toolkit.getDefaultToolkit().getImage("hearts" + health + ".png");
-        g.drawImage(healthImage, (int) tankHull.getTopLeftX() + tankHull.getWidth()/2 - (healthImage.getWidth(null) * 4)/2, (int) tankHull.getTopLeftY() + tankHull.getHeight() , healthImage.getWidth(null) * 4, healthImage.getHeight(null) * 4, null);
+        g.drawImage(healthImage, (int) tankHull.getTopLeftX() + tankHull.getWidth()/2 - (healthImage.getWidth(null) * 4)/2, (int) tankHull.getTopLeftY() + tankHull.getHeight() + 10 , healthImage.getWidth(null) * 4, healthImage.getHeight(null) * 4, null);
     }
 
     @Override

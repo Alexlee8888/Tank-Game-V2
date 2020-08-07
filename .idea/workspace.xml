@@ -54,8 +54,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TankObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="104" column="29" selection-start-line="104" selection-start-column="29" selection-end-line="104" selection-end-column="29" />
+            <state relative-caret-position="279">
+              <caret line="125" column="180" selection-start-line="125" selection-start-column="180" selection-end-line="125" selection-end-column="180" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1385#1386#0" expanded="true" />
@@ -70,9 +70,9 @@
                 <element signature="method#moveTurret#0;class#TankObject#0" />
                 <element signature="method#tick#0;class#TankObject#0" />
                 <element signature="e#8691#8735#1" />
-                <element signature="e#9146#9147#0" expanded="true" />
+                <element signature="e#9151#9152#0" expanded="true" />
                 <element signature="e#8789#8840#1" />
-                <element signature="e#9251#9252#0" expanded="true" />
+                <element signature="e#9256#9257#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -178,8 +178,8 @@
         <option value="$PROJECT_DIR$/src/Game.java" />
         <option value="$PROJECT_DIR$/src/BulletObject.java" />
         <option value="$PROJECT_DIR$/src/BulletObject.java" />
-        <option value="$PROJECT_DIR$/src/TankObject.java" />
         <option value="$PROJECT_DIR$/src/TankPartsObject.java" />
+        <option value="$PROJECT_DIR$/src/TankObject.java" />
       </list>
     </option>
   </component>
@@ -215,7 +215,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1596831675555" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1596831943948" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
@@ -278,7 +278,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3204578" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -289,7 +288,7 @@
       <window_info id="UI Designer" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299363" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3312102" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3312102" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -593,8 +592,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TankObject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="104" column="29" selection-start-line="104" selection-start-column="29" selection-end-line="104" selection-end-column="29" />
+        <state relative-caret-position="279">
+          <caret line="125" column="180" selection-start-line="125" selection-start-column="180" selection-end-line="125" selection-end-column="180" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1385#1386#0" expanded="true" />
@@ -609,9 +608,9 @@
             <element signature="method#moveTurret#0;class#TankObject#0" />
             <element signature="method#tick#0;class#TankObject#0" />
             <element signature="e#8691#8735#1" />
-            <element signature="e#9146#9147#0" expanded="true" />
+            <element signature="e#9151#9152#0" expanded="true" />
             <element signature="e#8789#8840#1" />
-            <element signature="e#9251#9252#0" expanded="true" />
+            <element signature="e#9256#9257#0" expanded="true" />
           </folding>
         </state>
       </provider>
