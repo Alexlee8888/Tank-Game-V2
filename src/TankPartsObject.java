@@ -54,6 +54,7 @@ public class TankPartsObject extends AbstractGameObject {
 
 
 
+
     @Override
     public Rectangle getBounds() {
         return new Rectangle((int) getTopLeftX(), (int) getTopLeftY(), getWidth(), getHeight());
@@ -93,7 +94,7 @@ public class TankPartsObject extends AbstractGameObject {
 //        setTopLeftX((int) newTopLeftX);
 //        setTopLeftX((int) newTopLeftY);
 
-        System.out.println("newX: " + (int) (newX + getCenterX()) + "newY: " + (int) (newY + (getCenterY())));
+//        System.out.println("newX: " + (int) (newX + getCenterX()) + "newY: " + (int) (newY + (getCenterY())));
     }
 
 

@@ -8,7 +8,7 @@ public class BulletObject implements GameObject {
     private static final int BULLET_SPEED = 12;
 //    private static final int PLAYER_ONE_TANK_OBJECT_INDEX = 1;
 //    private static final int PLAYER_TWO_TANK_OBJECT_INDEX = 2;
-    private static final int BULLET_OFFSET = 0;
+    private static final int BULLET_OFFSET = 35/2;
 
     private TankType tankType;
     private Handler objectHandler;

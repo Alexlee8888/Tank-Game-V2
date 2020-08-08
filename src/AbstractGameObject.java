@@ -30,6 +30,10 @@ public abstract class AbstractGameObject implements GameObject {
         this.topLeftY = centerY - height/2;
     }
 
+    public void setImage(Image image) {
+        objectImage = image;
+    }
+
     public void setTopLeftX(int topLeftX) {
         this.topLeftX = topLeftX;
     }

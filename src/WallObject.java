@@ -18,6 +18,9 @@ public class WallObject implements GameObject {
     public void tick(KeyInput keyInput) {
         TankObject playerOne = (TankObject) handler.getGameObjects().get(handler.PLAYER_ONE);
         TankObject playerTwo = (TankObject) handler.getGameObjects().get(handler.PLAYER_TWO);
+        if(playerOne == null || playerTwo == null) {
+            return;
+        }
         if(playerOne.getBounds().intersects(getBounds())) {
             int lastKeyPressed = playerOne.lastKeyPressed;
 //            switch (playerOne.lastKeyPressed) {

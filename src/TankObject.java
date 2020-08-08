@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TankObject implements GameObject {
 
@@ -22,12 +24,18 @@ public class TankObject implements GameObject {
     private boolean canTurnLeft = true;
     private boolean canTurnRight = true;
     private boolean canShoot = true;
+    private boolean canMoveTank = true;
+    private boolean isExploding = false;
     private int health = 6;
     public int lastKeyPressed;
+    private Game game;
+    private int countStatusTick = 0;
+    private int statusOfExplosions = 1;
 
 
 
-    public TankObject(int x, int y, TankType tankType, Handler objectHandler) {
+    public TankObject(int x, int y, TankType tankType, Handler objectHandler, Game game) {
+        this.game = game;
         this.tankType = tankType;
         this.objectHandler = objectHandler;
         this.hullSpeed = HULL_SPEED;
@@ -36,10 +44,19 @@ public class TankObject implements GameObject {
     }
 
     public void takeDamage() {
-        if (health == 0) {
-            return;
-        }
         health--;
+        if (health <= 0) {
+            new Timer().schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            game.setIsGameOver(true);
+                        }
+                    },
+                    1500
+            );
+        }
+
     }
     public int getHealth() {
         return health;
@@ -59,6 +76,10 @@ public class TankObject implements GameObject {
 
     public void setTurnRight(boolean bool) {
         canTurnRight = bool;
+    }
+
+    public void setCanMoveTank(boolean bool) {
+        canMoveTank = bool;
     }
 
     public void updateHullAngleClockWise () {
@@ -128,7 +149,25 @@ public class TankObject implements GameObject {
 
     @Override
     public void tick(KeyInput keyInput) {
-        if(tankType.getGameObjectType() == GameObjectType.PLAYER_ONE) {
+        if(isExploding) {
+            if(countStatusTick % 5 == 0 && isExploding) {
+                Image hull_explosion = Toolkit.getDefaultToolkit().getImage("tank_explosion" + statusOfExplosions + ".png");
+                tankHull.setImage(hull_explosion);
+                tankTurret.setImage(null);
+                statusOfExplosions++;
+            }
+            else if(countStatusTick > 120 && isExploding) {
+                for(int i = 0; i < objectHandler.getGameObjects().size(); i++) {
+                    if(objectHandler.getGameObjects().get(i) == this) {
+                        objectHandler.getGameObjects().set(i, null);
+                    }
+                }
+
+            }
+            countStatusTick++;
+
+        }
+        if(canMoveTank && tankType.getGameObjectType() == GameObjectType.PLAYER_ONE) {
             if(keyInput.isKey(KeyEvent.VK_UP) && canMoveForward) {
                 moveForward();
                 lastKeyPressed = KeyEvent.VK_UP;
@@ -178,7 +217,7 @@ public class TankObject implements GameObject {
 //                    objectHandler.addObject(newBullet);
 //            }
         }
-        if(tankType.getGameObjectType() == GameObjectType.PLAYER_TWO) {
+        if(canMoveTank && tankType.getGameObjectType() == GameObjectType.PLAYER_TWO) {
             if(keyInput.isKey(KeyEvent.VK_I) && canMoveForward) {
                 moveForward();
                 lastKeyPressed = KeyEvent.VK_I;
@@ -228,13 +267,9 @@ public class TankObject implements GameObject {
     @Override
     public void render(Graphics g) {
 
-        if(health == 0){
-            setTurnRight(false);
-            setTurnLeft(false);
-            setMoveBackward(false);
-            setMoveForward(false);
-            canShoot = false;
-            return;
+        if(health <= 0){
+            setCanMoveTank(false);
+            isExploding = true;
         }
 
         tankHull.render(g);

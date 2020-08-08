@@ -29,15 +29,30 @@ public class Game extends Canvas implements Runnable {
     private boolean isRunning = false;
     private Thread thread;
     private boolean isPlayButtonClicked = false;
+    private boolean isGameOver = false;
     private boolean gameStarted = false;
+    private boolean isAtHomeScreen = true;
     private Window window;
 
     public void setIsPlayClicked(boolean bool) {
         isPlayButtonClicked = bool;
+        isGameOver = false;
+        isAtHomeScreen = false;
     }
 
+    public void setIsGameOver(boolean bool) {
+        isGameOver = bool;
+        isPlayButtonClicked = false;
+        isAtHomeScreen = false;
+    }
 
-    public Game() throws IOException {
+    public void setIsAtHomeScreen(boolean bool) {
+        isAtHomeScreen = bool;
+        isPlayButtonClicked = false;
+        isGameOver = false;
+    }
+
+    public Game() {
         window = new Window(windowDimension, this, "Tank Game");
         keyInput = new KeyInput();
         this.addKeyListener(keyInput);
@@ -48,13 +63,6 @@ public class Game extends Canvas implements Runnable {
         requestFocus();
         start();
     }
-
-//    public void start() {
-//        keyInput = new KeyInput();
-//        isRunning = true;
-//        thread = new Thread(this);
-//        thread.run();
-//    }
 
     public void startMultiplayerGame() {
         if (gameStarted) {
@@ -78,8 +86,8 @@ public class Game extends Canvas implements Runnable {
             }
         }
 
-        TankObject player1 = new TankObject(100, 750, TankType.PLAYER_ONE_TANK_TYPE, objectHandler);
-        TankObject player2 = new TankObject(800, 150, TankType.PLAYER_TWO_TANK_TYPE, objectHandler);
+        TankObject player1 = new TankObject(100, 750, TankType.PLAYER_ONE_TANK_TYPE, objectHandler, this);
+        TankObject player2 = new TankObject(800, 150, TankType.PLAYER_TWO_TANK_TYPE, objectHandler, this);
 
         objectHandler.addObject(player1);
         objectHandler.addHittableObject(player1);
@@ -207,13 +215,31 @@ public class Game extends Canvas implements Runnable {
 
         g.setColor(Color.WHITE);
         g.drawImage(BACKGROUND, 0, 0, backgroundWidth, backgroundHeight, null);
-        if(isPlayButtonClicked) {
-            startMultiplayerGame();
 
-        }
-        else{
+
+        if(isAtHomeScreen) {
+            objectHandler.getButtons().removeAll(objectHandler.getButtons());
             paintHomeScreen(g);
         }
+
+        else if(isPlayButtonClicked) {
+            for(int i = 0; i < objectHandler.getButtons().size(); i++) {
+                GameButton button = (GameButton) objectHandler.getButtons().get(i);
+                button.setIsClickable(false);
+            }
+            startMultiplayerGame();
+//            GameSounds.playBackgroundMusic();
+        }
+
+        else if(isGameOver) {
+            objectHandler.getGameObjects().removeAll(objectHandler.getGameObjects());
+            objectHandler.getButtons().removeAll(objectHandler.getButtons());
+            objectHandler.getHittableObjects().removeAll(objectHandler.getHittableObjects());
+            gameStarted = false;
+            paintEndScreen(g);
+        }
+
+
         // custom logic code
         renderGame(g);
         bs.show();
@@ -226,31 +252,35 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void paintHomeScreen(Graphics g) {
-        g.setColor(Color.RED);
         Image startMenu = Toolkit.getDefaultToolkit().getImage("start_menu_background1.png");
         g.drawImage(startMenu, 0, 0, backgroundWidth, backgroundHeight, null);
-//        BufferedImage buttonIcon = null;
-//        try {
-//            buttonIcon = ImageIO.read(new File(("start_menu_background_hi.png")));
-//        } catch (IOException e) {
-//
-//        }
-//        JButton button = new JButton(new ImageIcon(buttonIcon));
-//        JPanel panel = new JPanel();
-//
-//        panel.setPreferredSize(windowDimension);
-//        button.setVisible(true);
-//        panel.add(button);
         GameButton singleButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 30, g, "singleplayer_button.png", this);
         objectHandler.addButton(singleButton);
+        singleButton.setIsClickable(true);
         GameButton multiButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 130, g, "multiplayer_button.png", this);
         objectHandler.addButton(multiButton);
+        multiButton.setIsClickable(true);
         GameButton cancelButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 230, g, "cancel_button.png", this);
         objectHandler.addButton(cancelButton);
+        cancelButton.setIsClickable(true);
+    }
+
+    public void paintEndScreen(Graphics g) {
+        Image startMenu = Toolkit.getDefaultToolkit().getImage("start_menu_background1.png");
+        g.drawImage(startMenu, 0, 0, backgroundWidth, backgroundHeight, null);
+        GameButton playAgainButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 30, g, "play_again_button.png", this);
+        objectHandler.addButton(playAgainButton);
+        playAgainButton.setIsClickable(true);
+        GameButton homeButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 130, g, "home_button.png", this);
+        objectHandler.addButton(homeButton);
+        homeButton.setIsClickable(true);
+        GameButton quitGameButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 230, g, "quit_game_button.png", this);
+        objectHandler.addButton(quitGameButton);
+        quitGameButton.setIsClickable(true);
     }
 
     public static void main(String[] args) throws IOException {
-        GameSounds.playBackgroundMusic();
+
         Game game = new Game();
         game.repaint();
     }

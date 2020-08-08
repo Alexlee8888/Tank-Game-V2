@@ -18,6 +18,9 @@ public class Handler {
     public void tick() {
         for (int i = 0; i < gameObjects.size(); i++) {
             GameObject tempObject = gameObjects.get(i);
+            if(tempObject == null) {
+                continue;
+            }
             tempObject.tick(keyInput);
         }
         if(keyInput.getClickPoint() == null) {
@@ -25,7 +28,7 @@ public class Handler {
         }
         for(int i = 0; i < buttons.size(); i++) {
             GameButton button = buttons.get(i);
-            if(button.isPressed(keyInput.getClickPoint().x, keyInput.getClickPoint().y)) {
+            if(button.getIsClickable() && button.isPressed(keyInput.getClickPoint().x, keyInput.getClickPoint().y)) {
                 button.doAction();
                 System.out.print("clicked");
                 keyInput.resetClickPoint();
@@ -38,6 +41,9 @@ public class Handler {
 
     public void render(Graphics g) {
         for (int i = 0; i < gameObjects.size(); i++) {
+            if(gameObjects.get(i) == null) {
+                continue;
+            }
             GameObject tempObject = gameObjects.get(i);
             tempObject.render(g);
         }
