@@ -136,6 +136,24 @@ public class GameSounds {
         }
     }
 
+    // tank explosion
+    public static void playCrashingExplosion() {
+        String tinyButtonPush = "crashing_explosion.wav";
+        InputStream in = null;
+        try {
+            in = new FileInputStream(tinyButtonPush);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        AudioStream audioStream = null;
+        try {
+            audioStream = new AudioStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        AudioPlayer.player.start(audioStream);
+    }
 
 
 

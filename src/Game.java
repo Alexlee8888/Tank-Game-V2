@@ -252,8 +252,10 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void paintHomeScreen(Graphics g) {
-        Image startMenu = Toolkit.getDefaultToolkit().getImage("start_menu_background1.png");
+        Image startMenu = Toolkit.getDefaultToolkit().getImage("start_menu_background.png");
+        Image title = Toolkit.getDefaultToolkit().getImage("title.png");
         g.drawImage(startMenu, 0, 0, backgroundWidth, backgroundHeight, null);
+        g.drawImage(title, 250, 170, 872 * 4 / 7, 411 * 4 / 7, null);
         GameButton singleButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 30, g, "singleplayer_button.png", this);
         objectHandler.addButton(singleButton);
         singleButton.setIsClickable(true);
@@ -266,7 +268,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void paintEndScreen(Graphics g) {
-        Image startMenu = Toolkit.getDefaultToolkit().getImage("start_menu_background1.png");
+        Image startMenu = Toolkit.getDefaultToolkit().getImage("start_menu_background.png");
         g.drawImage(startMenu, 0, 0, backgroundWidth, backgroundHeight, null);
         GameButton playAgainButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 30, g, "play_again_button.png", this);
         objectHandler.addButton(playAgainButton);

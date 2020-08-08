@@ -26,7 +26,7 @@ public class TankObject implements GameObject {
     private boolean canShoot = true;
     private boolean canMoveTank = true;
     private boolean isExploding = false;
-    private int health = 6;
+    private int health = 3;
     public int lastKeyPressed;
     private Game game;
     private int countStatusTick = 0;
@@ -269,6 +269,9 @@ public class TankObject implements GameObject {
 
         if(health <= 0){
             setCanMoveTank(false);
+            if(!isExploding) {
+                GameSounds.playCrashingExplosion();
+            }
             isExploding = true;
         }
 
