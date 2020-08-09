@@ -26,7 +26,7 @@ public class TankObject implements GameObject {
     private boolean canShoot = true;
     private boolean canMoveTank = true;
     private boolean isExploding = false;
-    private int health = 3;
+    private int health = 6 ;
     public int lastKeyPressed;
     private Game game;
     private int countStatusTick = 0;
@@ -58,6 +58,15 @@ public class TankObject implements GameObject {
         }
 
     }
+
+    public TankPartsObject getTankHull(){
+        return tankHull;
+    }
+
+    public TankPartsObject getTankTurret() {
+        return tankTurret;
+    }
+
     public int getHealth() {
         return health;
     }
@@ -84,6 +93,7 @@ public class TankObject implements GameObject {
 
     public void updateHullAngleClockWise () {
         tankHull.setAngle(tankHull.getAngle() + HULL_DEGRESS_TURNED);
+
         updateTurretAngleClockWise(1);
         tankHull.rotatePoint(-HULL_DEGRESS_TURNED);
     }
@@ -142,10 +152,10 @@ public class TankObject implements GameObject {
         tankTurret.setCenterY(tankTurret.getCenterY() + deltaY);
     }
 
-    public void drawHearts(Graphics g) {
-        Image healthImage = Toolkit.getDefaultToolkit().getImage("hearts" + health + ".png");
-        g.drawImage(healthImage, (int) tankHull.getTopLeftX() + tankHull.getWidth()/2 - (healthImage.getWidth(null) * 4)/2, (int) tankHull.getTopLeftY() + tankHull.getHeight() + 10 , healthImage.getWidth(null) * 4, healthImage.getHeight(null) * 4, null);
-    }
+//    public void drawHearts(Graphics g) {
+//        Image healthImage = Toolkit.getDefaultToolkit().getImage("hearts" + health + ".png");
+//        g.drawImage(healthImage, (int) tankHull.getTopLeftX() + tankHull.getWidth()/2 - (healthImage.getWidth(null) * 4)/2, (int) tankHull.getTopLeftY() + tankHull.getHeight() + 10 , healthImage.getWidth(null) * 4, healthImage.getHeight(null) * 4, null);
+//    }
 
     @Override
     public void tick(KeyInput keyInput) {
@@ -277,7 +287,7 @@ public class TankObject implements GameObject {
 
         tankHull.render(g);
         tankTurret.render(g);
-        drawHearts(g);
+//        drawHearts(g);
 
 
 

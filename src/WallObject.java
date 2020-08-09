@@ -8,6 +8,8 @@ public class WallObject implements GameObject {
     private int topLeftX;
     private int topLeftY;
     private Handler handler;
+    private int moveX = 0;
+    private int moveY = 0;
 
     public WallObject(int topLeftX, int topLeftY, Handler handler) {
         this.handler = handler;
@@ -117,15 +119,47 @@ public class WallObject implements GameObject {
         }
     }
 
+    public int getTopLeftX() {
+        return topLeftX;
+    }
+
+    public int getTopLeftY() {
+        return topLeftY;
+    }
+
+    public void setTopLeftX(int topLeftX) {
+        this.topLeftX = topLeftX;
+    }
+
+    public void setTopLeftY(int topLeftY) {
+        this.topLeftY = topLeftY;
+    }
+
+    public void addToMoveX(int add) {
+        moveX += add;
+    }
+
+    public void subtractFromMoveX(int subtract) {
+        moveX-= subtract;
+    }
+
+    public void addToMoveY(int add) {
+        moveY += add;
+    }
+
+    public void subtractFromMoveY(int subtract) {
+        moveY-= subtract;
+    }
+
     @Override
     public void render(Graphics g) {
         g.setColor(new Color(0, 0, 0, 0));
-        g.fillRect(topLeftX, topLeftY, WIDTH, HEIGHT);
+        //g.fillRect(topLeftX + moveX, topLeftY + moveY, WIDTH, HEIGHT);
     }
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(topLeftX, topLeftY, WIDTH, HEIGHT);
+        return new Rectangle(topLeftX + moveX, topLeftY + moveY, WIDTH, HEIGHT);
 
     }
 

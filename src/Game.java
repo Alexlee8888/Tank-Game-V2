@@ -1,8 +1,6 @@
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +17,7 @@ public class Game extends Canvas implements Runnable {
 
 
     private static Image BACKGROUND = Toolkit.getDefaultToolkit().getImage("background.png");
+    private static Image BACKGROUND2 = Toolkit.getDefaultToolkit().getImage("background2.png");
     //    public static final Dimension windowDimension = Toolkit.getDefaultToolkit().getScreenSize();
     public static final Dimension windowDimension = new Dimension(canvasWidth, canvasHeight);
 
@@ -33,6 +32,8 @@ public class Game extends Canvas implements Runnable {
     private boolean gameStarted = false;
     private boolean isAtHomeScreen = true;
     private Window window;
+    private TankObject winner;
+    private Camera camera;
 
     public void setIsPlayClicked(boolean bool) {
         isPlayButtonClicked = bool;
@@ -53,7 +54,9 @@ public class Game extends Canvas implements Runnable {
     }
 
     public Game() {
+
         window = new Window(windowDimension, this, "Tank Game");
+
         keyInput = new KeyInput();
         this.addKeyListener(keyInput);
         this.addMouseListener(keyInput);
@@ -65,10 +68,14 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void startMultiplayerGame() {
+        winner = null;
+        if (objectHandler != null) {
+            camera = new Camera(0, 0, windowDimension, objectHandler);
+        }
         if (gameStarted) {
             return;
         }
-            Scanner sc = null;
+        Scanner sc = null;
         try {
             sc = new Scanner(new File("WallPlacements"));
         } catch (FileNotFoundException e) {
@@ -86,7 +93,7 @@ public class Game extends Canvas implements Runnable {
             }
         }
 
-        TankObject player1 = new TankObject(100, 750, TankType.PLAYER_ONE_TANK_TYPE, objectHandler, this);
+        TankObject player1 = new TankObject(100, 700, TankType.PLAYER_ONE_TANK_TYPE, objectHandler, this);
         TankObject player2 = new TankObject(800, 150, TankType.PLAYER_TWO_TANK_TYPE, objectHandler, this);
 
         objectHandler.addObject(player1);
@@ -202,6 +209,23 @@ public class Game extends Canvas implements Runnable {
 
     public void tick() {
         objectHandler.tick();
+        for (int i = 0; i < objectHandler.getGameObjects().size(); i++) {
+            if (objectHandler.getGameObjects().get(i) instanceof TankObject) {
+                TankObject tankObject = (TankObject) objectHandler.getGameObjects().get(i);
+                if (tankObject.getTankHull().getGameObjectType() == GameObjectType.PLAYER_ONE) {
+                    camera.tick(tankObject);
+
+                }
+            }
+        }
+    }
+
+    public void drawHearts(Graphics g, GameObject gameObject) {
+        TankObject tankObject = (TankObject) gameObject;
+        int health = tankObject.getHealth();
+        TankPartsObject tankHull = tankObject.getTankHull();
+        Image healthImage = Toolkit.getDefaultToolkit().getImage("hearts" + health + ".png");
+        g.drawImage(healthImage, (int) tankHull.getTopLeftX() + tankHull.getWidth() / 2 - (healthImage.getWidth(null) * 4) / 2, (int) tankHull.getTopLeftY() + tankHull.getHeight() + 10, healthImage.getWidth(null) * 4, healthImage.getHeight(null) * 4, null);
     }
 
     public void render() {
@@ -212,38 +236,55 @@ public class Game extends Canvas implements Runnable {
             return;
         }
         Graphics g = bs.getDrawGraphics();
+        Graphics2D g2d = (Graphics2D) g;
 
-        g.setColor(Color.WHITE);
+
+//        AffineTransform identity = new AffineTransform();
+//        g2d.setTransform(identity);
+
+        if (camera != null) {
+//            g2d.translate(-camera.getX(), -camera.getY());
+
+        }
         g.drawImage(BACKGROUND, 0, 0, backgroundWidth, backgroundHeight, null);
+        g.drawImage(BACKGROUND2, backgroundWidth, 0, backgroundWidth, backgroundHeight, null);
 
-
-        if(isAtHomeScreen) {
+        if (isAtHomeScreen) {
             objectHandler.getButtons().removeAll(objectHandler.getButtons());
             paintHomeScreen(g);
-        }
-
-        else if(isPlayButtonClicked) {
-            for(int i = 0; i < objectHandler.getButtons().size(); i++) {
+        } else if (isPlayButtonClicked) {
+            for (int i = 0; i < objectHandler.getButtons().size(); i++) {
                 GameButton button = (GameButton) objectHandler.getButtons().get(i);
                 button.setIsClickable(false);
             }
             startMultiplayerGame();
 //            GameSounds.playBackgroundMusic();
-        }
+        } else if (isGameOver) {
 
-        else if(isGameOver) {
-            objectHandler.getGameObjects().removeAll(objectHandler.getGameObjects());
+
             objectHandler.getButtons().removeAll(objectHandler.getButtons());
-            objectHandler.getHittableObjects().removeAll(objectHandler.getHittableObjects());
             gameStarted = false;
             paintEndScreen(g);
         }
 
 
+        if (objectHandler.getGameObjects().size() != 0) {
+            drawHearts(g, objectHandler.getGameObjects().get(Handler.PLAYER_ONE));
+            drawHearts(g, objectHandler.getGameObjects().get(Handler.PLAYER_TWO));
+        }
+
         // custom logic code
+        //g2d.setTransform(identity);
+
         renderGame(g);
-        bs.show();
+
+//        if (camera != null) {
+//            g2d.translate(camera.getX(), camera.getY());
+//
+//        }
+
         g.dispose();
+        bs.show();
     }
 
     // game rendering code
@@ -268,7 +309,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void paintEndScreen(Graphics g) {
-        Image startMenu = Toolkit.getDefaultToolkit().getImage("start_menu_background.png");
+        Image startMenu = Toolkit.getDefaultToolkit().getImage("end_menu_background.png");
         g.drawImage(startMenu, 0, 0, backgroundWidth, backgroundHeight, null);
         GameButton playAgainButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 30, g, "play_again_button.png", this);
         objectHandler.addButton(playAgainButton);
@@ -279,6 +320,24 @@ public class Game extends Canvas implements Runnable {
         GameButton quitGameButton = new GameButton(backgroundWidth / 2, backgroundHeight / 2 + 230, g, "quit_game_button.png", this);
         objectHandler.addButton(quitGameButton);
         quitGameButton.setIsClickable(true);
+        for (int i = 0; i < objectHandler.getGameObjects().size(); i++) {
+            if (objectHandler.getGameObjects().get(i) instanceof TankObject) {
+                TankObject winner = (TankObject) objectHandler.getGameObjects().get(i);
+                if (winner.getHealth() <= 0) {
+                    continue;
+                }
+                this.winner = winner;
+
+            }
+        }
+        objectHandler.getGameObjects().removeAll(objectHandler.getGameObjects());
+        objectHandler.getHittableObjects().removeAll(objectHandler.getHittableObjects());
+        int centerX = 330;
+        int centerY = 290;
+        g.drawImage(winner.getTankHull().getObjectImage(), centerX - (winner.getTankHull().getWidth()), centerY - (winner.getTankHull().getHeight()), winner.getTankHull().getWidth() * 2, winner.getTankHull().getHeight() * 2, this);
+        g.drawImage(winner.getTankTurret().getObjectImage(), centerX - (winner.getTankTurret().getWidth()), centerY - (winner.getTankTurret().getHeight()), winner.getTankTurret().getWidth() * 2, winner.getTankTurret().getHeight() * 2, this);
+        Image winText = Toolkit.getDefaultToolkit().getImage("win_text.png");
+        g.drawImage(winText, centerX + 85 + (winner.getTankHull().getWidth()), centerY - (winner.getTankHull().getHeight()), null);
     }
 
     public static void main(String[] args) throws IOException {

@@ -6,9 +6,9 @@ import java.util.TimerTask;
 public class BulletObject implements GameObject {
 
     private static final int BULLET_SPEED = 12;
-//    private static final int PLAYER_ONE_TANK_OBJECT_INDEX = 1;
+    //    private static final int PLAYER_ONE_TANK_OBJECT_INDEX = 1;
 //    private static final int PLAYER_TWO_TANK_OBJECT_INDEX = 2;
-    private static final int BULLET_OFFSET = 35/2;
+    private static final int BULLET_OFFSET = 35 / 2;
 
     private TankType tankType;
     private Handler objectHandler;
@@ -27,17 +27,13 @@ public class BulletObject implements GameObject {
     private int statusOfExplosions = 1;
 
 
-
-
-
-
     public BulletObject(double x, double y, int angle, TankType tankType, Handler objectHandler) {
         bulletImage = tankType.getBulletImage();
         this.tankType = tankType;
         this.x = x;
         this.y = y;
         this.angle = angle;
-        this.hitPointX = x + Math.cos(Math.toRadians(angle)) * ((tankType.getTurretWidth() / 2.0) - BULLET_OFFSET) ;
+        this.hitPointX = x + Math.cos(Math.toRadians(angle)) * ((tankType.getTurretWidth() / 2.0) - BULLET_OFFSET);
         this.hitPointY = y + Math.sin(Math.toRadians(angle)) * ((tankType.getTurretWidth() / 2.0) - BULLET_OFFSET);
 
         this.objectHandler = objectHandler;
@@ -69,15 +65,13 @@ public class BulletObject implements GameObject {
         checkCollisions();
         if (isBulletMoving) {
             moveBullet();
-        }
-        else if(countStatusTick % 5 == 0 && isExploding) {
+        } else if (countStatusTick % 5 == 0 && isExploding) {
             Image bullet_explosion = Toolkit.getDefaultToolkit().getImage("chris_bullet_explosion" + statusOfExplosions + ".png");
 //            Image bullet_explosion = Toolkit.getDefaultToolkit().getImage("chris_tank_supercharge_bullet" + statusOfExplosions + ".png");
 
             setBulletImage(bullet_explosion);
             statusOfExplosions++;
-        }
-        else if(countStatusTick > 120 && isExploding) {
+        } else if (countStatusTick > 120 && isExploding) {
             objectHandler.removeObject(this);
         }
 
@@ -86,19 +80,18 @@ public class BulletObject implements GameObject {
     }
 
     public void checkCollisions() {
-        for(int i = 0; i < objectHandler.getHittableObjects().size(); i++) {
+        for (int i = 0; i < objectHandler.getHittableObjects().size(); i++) {
             GameObject gameObject = objectHandler.getHittableObjects().get(i);
-            if(gameObject instanceof TankObject && gameObject.getPolygonBounds().contains(getHitPoint())) {
+            if (gameObject instanceof TankObject && gameObject.getPolygonBounds().contains(getHitPoint())) {
 
-                if(!isExploding) {
+                if (!isExploding) {
                     ((TankObject) gameObject).takeDamage();
                     GameSounds.playExplosionsBlast2();
                 }
                 explodeBullet();
-            }
-            else if(gameObject.getBounds().contains(getHitPoint())) {
+            } else if (gameObject.getBounds().contains(getHitPoint())) {
 
-                if(!isExploding) {
+                if (!isExploding) {
                     GameSounds.chooseAndPlayExplosion();
                 }
                 explodeBullet();
@@ -112,6 +105,8 @@ public class BulletObject implements GameObject {
         Graphics2D g2d = (Graphics2D) g;
         // draw rect
         AffineTransform identity = new AffineTransform();
+        identity = new AffineTransform();
+
 
         g2d.setTransform(identity);
         // translate tank

@@ -56,15 +56,15 @@ public class KeyInput implements KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int clickX = e.getX();
-        int clickY = e.getY();
-        mouseClicked = new Point(clickX, clickY);
+
 
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        int clickX = e.getX();
+        int clickY = e.getY();
+        mouseClicked = new Point(clickX, clickY);
     }
 
     @Override

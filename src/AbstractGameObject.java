@@ -29,6 +29,10 @@ public abstract class AbstractGameObject implements GameObject {
         this.topLeftX = centerX - width/2;
         this.topLeftY = centerY - height/2;
     }
+//
+//    public void setAngle (int angle) {
+//        this.angle = angle;
+//    }
 
     public void setImage(Image image) {
         objectImage = image;
